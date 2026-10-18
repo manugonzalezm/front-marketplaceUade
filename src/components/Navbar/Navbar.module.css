@@ -1,59 +1,76 @@
-/* Mobile first: los estilos base son para celular y los @media agregan escritorio. */
+/* Mobile first: base para celular, @media para tablet y escritorio. */
 
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   background: var(--color-superficie);
   border-bottom: 1px solid var(--color-borde);
 }
 
-.barra {
-  display: flex;
+/* Celular: [menú] [logo] ........ [mi compra]
+ *          [buscador a todo el ancho        ] */
+.principal {
+  display: grid;
+  grid-template-areas:
+    'menu marca acciones'
+    'buscador buscador buscador';
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--espacio-3);
-  min-height: 3.75rem;
+  column-gap: var(--espacio-2);
+  row-gap: var(--espacio-3);
+  padding-block: var(--espacio-3);
+}
+
+.menuMovil {
+  grid-area: menu;
 }
 
 .marca {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--espacio-2);
-  color: var(--color-texto);
-  font-size: var(--texto-base);
-  font-weight: var(--peso-bold);
-  letter-spacing: -0.01em;
+  grid-area: marca;
+  justify-self: start;
+  border-radius: var(--radio-sm);
   text-decoration: none;
-  white-space: nowrap;
 }
 
-.logo {
-  width: 2rem;
-  height: 2rem;
-  flex-shrink: 0;
+.buscador {
+  grid-area: buscador;
 }
 
 .acciones {
+  grid-area: acciones;
   display: flex;
   align-items: center;
   gap: var(--espacio-2);
 }
 
+.publicar,
 .cuenta {
-  display: flex;
-  gap: var(--espacio-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  display: none;
 }
 
 .compra {
-  padding-inline: var(--espacio-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
+  min-width: var(--alto-control);
+  min-height: var(--alto-control);
+  padding-inline: var(--espacio-2);
+  color: var(--color-texto);
+  font-weight: var(--peso-semibold);
+  text-decoration: none;
+  border-radius: var(--radio-sm);
+  transition: background-color var(--transicion);
 }
 
-/* En celular el botón muestra solo el ícono; el texto queda para lectores de pantalla. */
-.textoCompra {
+.compra:hover {
+  color: var(--color-texto);
+  background: var(--color-superficie-alt);
+}
+
+.compra[aria-current='page'] {
+  color: var(--color-primario);
+}
+
+.compraTexto {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -62,149 +79,84 @@
   white-space: nowrap;
 }
 
-.toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--alto-control);
-  height: var(--alto-control);
-  color: var(--color-texto);
-  background: var(--color-superficie);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-sm);
-  cursor: pointer;
-}
-
-.menu {
-  display: none;
+/* Barra de categorías: se desplaza en horizontal si no entran */
+.categorias {
   border-top: 1px solid var(--color-borde);
 }
 
-.menuAbierto {
-  display: block;
-  max-height: calc(100dvh - 3.75rem);
-  overflow-y: auto;
-}
-
-.menuInterno {
+.listaCategorias {
   display: flex;
-  flex-direction: column;
-  gap: var(--espacio-4);
-  padding-block: var(--espacio-4);
-}
-
-.lista {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
+  gap: var(--espacio-5);
+  margin-block: 0;
+  overflow-x: auto;
   list-style: none;
+  scrollbar-width: none;
 }
 
-.grupo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-1);
-}
-
-.grupoTitulo {
-  padding-inline: var(--espacio-2);
-  color: var(--color-texto-suave);
-  font-size: var(--texto-sm);
-}
-
-.link {
+.categoria {
   display: flex;
   align-items: center;
-  min-height: var(--alto-control);
-  padding-inline: var(--espacio-2);
-  color: var(--color-texto);
+  min-height: 2.75rem;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
   text-decoration: none;
-  border-radius: var(--radio-sm);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
 }
 
-.link:hover {
-  color: var(--color-tinta);
-}
-
-/* Link activo: marcado con resaltador, como en los apuntes. */
-.activo .texto {
-  background-image: linear-gradient(
-    transparent 50%,
-    var(--color-resaltador) 50%,
-    var(--color-resaltador) 88%,
-    transparent 88%
-  );
-  box-decoration-break: clone;
-  padding-inline: 0.15em;
-  margin-inline: -0.15em;
-}
-
-.activo:hover {
+.categoria:hover {
   color: var(--color-texto);
 }
 
-.desarrollo {
-  background: var(--color-fondo);
-  border-top: 1px dashed var(--color-borde);
+.categoriaActiva {
+  color: var(--color-texto);
+  border-bottom-color: var(--color-primario);
 }
 
-.soloEscritorio {
-  display: none;
-}
-
-@media (min-width: 480px) {
-  .marca {
-    font-size: var(--texto-lg);
+@media (min-width: 768px) {
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
   }
 
-  .textoCompra {
+  /* [logo] [buscador ...............] [publicar] [mi cuenta] [mi compra] */
+  .principal {
+    grid-template-areas: 'marca buscador acciones';
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: var(--espacio-5);
+    min-height: var(--alto-header);
+    padding-block: var(--espacio-2);
+  }
+
+  .menuMovil {
+    display: none;
+  }
+
+  .publicar {
+    display: inline-flex;
+  }
+
+  .cuenta {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .buscador {
+    max-width: 40rem;
+  }
+
+  .compra {
+    padding-inline: var(--espacio-3);
+  }
+
+  .compraTexto {
     position: static;
     width: auto;
     height: auto;
     overflow: visible;
     clip-path: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .toggle,
-  .soloMovil {
-    display: none;
-  }
-
-  .soloEscritorio {
-    display: flex;
-  }
-
-  .menu,
-  .menuAbierto {
-    display: block;
-    max-height: none;
-    overflow: visible;
-  }
-
-  .menuInterno {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--espacio-5);
-    padding-block: 0;
-  }
-
-  .lista {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--espacio-1);
-  }
-
-  .grupo {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .link {
-    min-height: 2.75rem;
   }
 }

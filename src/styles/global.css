@@ -3,13 +3,15 @@
  * compartidas. Los estilos de cada componente van en su propio .module.css.
  *
  * Clases globales disponibles:
- *   .contenedor                 ancho máximo + márgenes laterales
- *   .boton                      base de botón (sirve en <button> y en <Link>)
- *   .boton-primario             acción principal de la pantalla (una sola por pantalla)
- *   .boton-secundario           acciones secundarias
- *   .boton-peligro              acciones destructivas (eliminar)
- *   .texto-suave                texto secundario
- *   .solo-lectores              oculto en pantalla, visible para lectores de pantalla
+ *   .contenedor          ancho máximo + márgenes laterales
+ *   .boton               base de botón (sirve en <button> y en <Link>)
+ *   .boton-primario      acción principal de la pantalla (una sola por pantalla)
+ *   .boton-secundario    acciones secundarias
+ *   .boton-fantasma      acciones terciarias, sin borde (ej.: "Cancelar")
+ *   .boton-peligro       acciones destructivas (eliminar)
+ *   .boton-bloque        ocupa todo el ancho disponible
+ *   .texto-suave         texto secundario
+ *   .solo-lectores       oculto en pantalla, visible para lectores de pantalla
  */
 
 *,
@@ -25,13 +27,24 @@ html {
 
 body {
   margin: 0;
-  min-height: 100dvh;
   background: var(--color-fondo);
   color: var(--color-texto);
   font-family: var(--fuente-base);
   font-size: var(--texto-base);
   line-height: var(--interlineado-base);
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Con un <dialog> modal abierto (menú en celular) la página de atrás no scrollea */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
 }
 
 h1,
@@ -40,7 +53,7 @@ h3,
 h4 {
   margin: 0 0 var(--espacio-3);
   line-height: var(--interlineado-titulos);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -71,12 +84,12 @@ p {
 }
 
 a {
-  color: var(--color-tinta);
+  color: var(--color-primario);
   text-underline-offset: 0.15em;
 }
 
 a:hover {
-  color: var(--color-tinta-hover);
+  color: var(--color-primario-hover);
 }
 
 img {
@@ -97,7 +110,8 @@ textarea {
 label {
   display: block;
   margin-bottom: var(--espacio-1);
-  font-weight: var(--peso-medio);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-semibold);
 }
 
 input:not([type='checkbox'], [type='radio'], [type='file']),
@@ -108,8 +122,19 @@ textarea {
   padding: var(--espacio-2) var(--espacio-3);
   font-size: var(--texto-base);
   background: var(--color-superficie);
-  border: 1px solid var(--color-borde);
+  border: 1px solid var(--color-borde-fuerte);
   border-radius: var(--radio-sm);
+  transition:
+    border-color var(--transicion),
+    box-shadow var(--transicion);
+}
+
+input:not([type='checkbox'], [type='radio'], [type='file']):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px var(--color-primario-suave);
+  outline: none;
 }
 
 input::placeholder,
@@ -125,7 +150,7 @@ textarea[aria-invalid='true'] {
 
 /* Foco visible para teclado en todo el sitio */
 :focus-visible {
-  outline: 2px solid var(--color-tinta);
+  outline: 2px solid var(--color-primario);
   outline-offset: 2px;
 }
 
@@ -145,10 +170,12 @@ textarea[aria-invalid='true'] {
   gap: var(--espacio-2);
   min-height: var(--alto-control);
   padding: var(--espacio-2) var(--espacio-4);
+  font-size: var(--texto-base);
   font-weight: var(--peso-semibold);
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
+  background: transparent;
   border: 1px solid transparent;
   border-radius: var(--radio-sm);
   cursor: pointer;
@@ -156,6 +183,10 @@ textarea[aria-invalid='true'] {
     background-color var(--transicion),
     border-color var(--transicion),
     color var(--transicion);
+}
+
+.boton svg {
+  flex-shrink: 0;
 }
 
 .boton:disabled,
@@ -166,23 +197,32 @@ textarea[aria-invalid='true'] {
 
 .boton-primario {
   color: var(--color-texto-invertido);
-  background: var(--color-tinta);
+  background: var(--color-primario);
 }
 
 .boton-primario:hover {
   color: var(--color-texto-invertido);
-  background: var(--color-tinta-hover);
+  background: var(--color-primario-hover);
 }
 
 .boton-secundario {
-  color: var(--color-tinta);
+  color: var(--color-texto);
   background: var(--color-superficie);
-  border-color: var(--color-borde);
+  border-color: var(--color-borde-fuerte);
 }
 
 .boton-secundario:hover {
-  color: var(--color-tinta-hover);
-  border-color: var(--color-tinta);
+  color: var(--color-primario);
+  border-color: var(--color-primario);
+}
+
+.boton-fantasma {
+  color: var(--color-texto);
+}
+
+.boton-fantasma:hover {
+  color: var(--color-texto);
+  background: var(--color-superficie-alt);
 }
 
 .boton-peligro {
@@ -194,6 +234,10 @@ textarea[aria-invalid='true'] {
 .boton-peligro:hover {
   color: var(--color-texto-invertido);
   background: var(--color-error);
+}
+
+.boton-bloque {
+  width: 100%;
 }
 
 /* Utilidades */
@@ -217,7 +261,7 @@ textarea[aria-invalid='true'] {
   z-index: 100;
   padding: var(--espacio-2) var(--espacio-4);
   color: var(--color-texto-invertido);
-  background: var(--color-tinta);
+  background: var(--color-primario);
   border-radius: var(--radio-sm);
   transform: translateY(-200%);
 }

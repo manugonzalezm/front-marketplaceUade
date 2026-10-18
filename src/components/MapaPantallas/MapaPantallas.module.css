@@ -1,0 +1,105 @@
+.mapa {
+  position: fixed;
+  right: var(--espacio-4);
+  bottom: var(--espacio-4);
+  z-index: 40;
+}
+
+.disparador {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  min-height: 2.5rem;
+  padding-inline: var(--espacio-4);
+  color: var(--color-texto-invertido);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-semibold);
+  list-style: none;
+  background: var(--color-texto);
+  border-radius: var(--radio-pill);
+  box-shadow: var(--sombra-flotante);
+  cursor: pointer;
+}
+
+.disparador::-webkit-details-marker {
+  display: none;
+}
+
+.panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--espacio-2));
+  width: min(20rem, calc(100vw - 2 * var(--espacio-4)));
+  max-height: min(34rem, calc(100dvh - 6rem));
+  padding: var(--espacio-3);
+  overflow-y: auto;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-flotante);
+}
+
+.aviso {
+  margin: 0 0 var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-3);
+  color: var(--color-aviso);
+  font-size: var(--texto-xs);
+  background: var(--color-aviso-suave);
+  border-radius: var(--radio-sm);
+}
+
+.grupo + .grupo {
+  margin-top: var(--espacio-2);
+  padding-top: var(--espacio-2);
+  border-top: 1px solid var(--color-borde);
+}
+
+.grupoTitulo {
+  margin: 0;
+  padding: var(--espacio-1) var(--espacio-2);
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-semibold);
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding: var(--espacio-1) var(--espacio-2);
+  color: var(--color-texto);
+  font-size: var(--texto-sm);
+  text-decoration: none;
+  border-radius: var(--radio-sm);
+}
+
+.link:hover {
+  color: var(--color-texto);
+  background: var(--color-superficie-alt);
+}
+
+.link[aria-current='page'] {
+  color: var(--color-primario);
+  background: var(--color-primario-suave);
+}
+
+.texto {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ruta {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

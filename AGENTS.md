@@ -1,8 +1,9 @@
 # AGENTS.md — front-marketplaceUade
 
 Guía para quien trabaje en este repo, persona o agente de IA. Si sos un agente: leé este archivo completo antes de
-tocar código y respetalo aunque tu costumbre sea otra. Si una tarea te obliga a romper una regla, frená y
-explicalo en la respuesta o en el PR en lugar de hacerlo en silencio.
+tocar código y respetalo aunque tu costumbre sea otra. Para implementar una pantalla, seguí además los pasos de
+[CONTRIBUTING.md](CONTRIBUTING.md). Si una tarea te obliga a romper una regla, frená y explicalo en la respuesta o
+en el PR en lugar de hacerlo en silencio.
 
 ## Qué es esto
 
@@ -13,19 +14,20 @@ Su README es la fuente de verdad del contrato de la API (endpoints, permisos, va
 
 ## Stack
 
-| Qué      | Versión / elección                            | Ojo con                                                                                              |
-| -------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| React    | 19                                            | Solo componentes funcionales y hooks                                                                 |
-| Build    | Vite 8                                        | Variables de entorno con prefijo `VITE_`                                                             |
-| Ruteo    | React Router 8, modo declarativo              | Se importa de `'react-router'`. `react-router-dom` ya no existe en v8: no lo instales ni lo importes |
-| Lenguaje | JavaScript (JSX), sin TypeScript              | Documentar props y funciones no obvias con JSDoc                                                     |
-| Estilos  | CSS Modules + tokens en CSS custom properties | Sin Tailwind, Bootstrap, MUI ni styled-components                                                    |
-| Lint     | oxlint (`npm run lint`)                       |                                                                                                      |
-| Formato  | Prettier (`npm run format`)                   | Sin punto y coma, comillas simples, 110 columnas                                                     |
-| Node     | 22.22+ (`.nvmrc`: 24)                         |                                                                                                      |
+| Qué      | Versión / elección                            | Ojo con                                                               |
+| -------- | --------------------------------------------- | --------------------------------------------------------------------- |
+| React    | 19                                            | Solo componentes funcionales y hooks                                  |
+| Build    | Vite 8                                        | Variables de entorno con prefijo `VITE_`                              |
+| Ruteo    | React Router 8, modo declarativo              | Se importa de `'react-router'`. `react-router-dom` ya no existe en v8 |
+| Lenguaje | JavaScript (JSX), sin TypeScript              | Documentar props y funciones no obvias con JSDoc                      |
+| Estilos  | CSS Modules + tokens en CSS custom properties | Sin Tailwind, Bootstrap, MUI ni styled-components                     |
+| Íconos   | lucide-react                                  | Ningún otro set de íconos ni SVG copiados de internet                 |
+| Lint     | oxlint (`npm run lint`)                       |                                                                       |
+| Formato  | Prettier (`npm run format`)                   | Sin punto y coma, comillas simples, 110 columnas                      |
+| Node     | 22.22+ (`.nvmrc`: 24)                         |                                                                       |
 
 No se agregan dependencias nuevas sin acordarlo con el grupo. Antes de instalar algo, fijate si se resuelve con
-lo que ya hay (fetch, `Intl`, CSS).
+lo que ya hay (fetch, `Intl`, CSS, `<dialog>`).
 
 ## Comandos
 
@@ -42,39 +44,57 @@ npm run format:check # lo que corre la revisión
 
 ```
 src/
-├── api/                 Acceso al back. client.js + un módulo por recurso
-│   ├── client.js        apiFetch(): base /api, token, JSON, errores. Ya existe
-│   ├── productos.js     (a crear) getProductos, getProducto, crearProducto...
-│   ├── categorias.js    (a crear)
-│   ├── carrito.js       (a crear)
-│   ├── usuarios.js      (a crear) login, registro, perfil
-│   └── imagenes.js      (a crear)
-├── components/          Componentes reutilizables. Uno por carpeta:
-│   └── ProductoCard/    ProductoCard.jsx + ProductoCard.module.css
-├── context/             (a crear) AuthContext, CompraContext
-├── hooks/               (a crear) hooks propios: useAuth, useCompra, ...
-├── layouts/             MainLayout (navbar + <Outlet />)
-├── pages/<seccion>/     Una pantalla por archivo, nombre terminado en Page
-├── routes/              AppRouter.jsx, paths.js, RutaPrivada.jsx, RutaAdmin.jsx
-├── styles/              tokens.css y global.css (los únicos CSS globales)
-└── utils/               Funciones puras sin React (formato.js)
+├── api/                        Acceso al back: client.js + un módulo por recurso
+│   ├── client.js               apiFetch(): base /api, token, JSON, errores
+│   └── categorias.js           ejemplo de módulo (productos.js, carrito.js, usuarios.js... a crear)
+├── components/                 Componentes compartidos por dos o más pantallas
+│   ├── EncabezadoPagina/       título + descripción + migas + acciones de cada pantalla
+│   ├── EstadoVacio/            listas vacías, errores, "sin resultados"
+│   ├── Footer/
+│   ├── Logo/
+│   ├── MapaPantallas/          atajos a todas las pantallas (solo en `npm run dev`)
+│   └── Navbar/                 Navbar.jsx + sus partes: Buscador/, MenuCuenta/, MenuMovil/
+├── context/                    (a crear) AuthContext, CompraContext
+├── hooks/                      (a crear) useAuth, useCompra, ...
+├── layouts/MainLayout.jsx      Navbar + <Outlet /> + Footer
+├── pages/                      Una carpeta por vista (ver abajo)
+├── routes/                     AppRouter.jsx, paths.js, RutaPrivada.jsx, RutaAdmin.jsx
+├── styles/                     tokens.css y global.css (los únicos CSS globales)
+└── utils/formato.js            formatearPrecio, formatearFecha
 ```
 
-Reglas:
+### Una carpeta por vista, un CSS por componente
 
-- Una página (`pages/`) arma la pantalla: trae los datos, maneja el estado y compone componentes. Un componente
-  (`components/`) recibe todo por props y no sabe de rutas ni de la API, salvo que su nombre lo diga.
-- Si un pedazo de UI se repite en dos pantallas, va a `components/`. Si solo lo usa una página, puede vivir como
-  función en el mismo archivo hasta que haga falta en otro lado.
-- Un componente por archivo, exportado por default, con el mismo nombre que el archivo.
+```
+src/pages/ProductoDetalle/
+├── ProductoDetallePage.jsx           la vista: trae los datos, maneja el estado, arma la pantalla
+├── ProductoDetallePage.module.css    solo layout de la vista (si hace falta)
+└── components/                       componentes que usa SOLO esta vista
+    └── PanelCompra/
+        ├── PanelCompra.jsx
+        └── PanelCompra.module.css
+```
+
+- Todo componente vive en su propia carpeta, con su `.jsx` y su `.module.css` con el mismo nombre. Nada de varios
+  componentes en un archivo ni estilos de un componente en el CSS de otro.
+- Si un componente lo usan dos o más vistas, va en `src/components/<Nombre>/`. Si arrancó en una vista y otra lo
+  necesita, se mueve a `src/components/` (en un PR aparte o avisando).
+- Una vista trae datos y maneja estado; sus componentes reciben todo por props y no llaman a la API ni leen la
+  URL, salvo que su nombre lo diga (ej. `Buscador`).
+- Un componente por archivo, exportado por default, con el mismo nombre que el archivo y la carpeta.
+- Imports con el alias `@` para todo lo que esté fuera de la carpeta actual:
+  `import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'`. Relativos (`./components/...`) solo para lo
+  que está dentro de la misma vista o componente.
 
 ## Nombres
 
 - Dominio en español, igual que el back: `producto`, `categoria`, `carrito`, `usuario`, `pedido`, `stock`,
   `precio`. Los campos se llaman exactamente como en los DTO del back (`categoriaId`, `nombreUsuario`,
   `contrasena` sin ñ).
-- Componentes y archivos `.jsx` en PascalCase (`ProductoCard.jsx`); páginas terminan en `Page`
-  (`ProductoDetallePage.jsx`); hooks empiezan con `use` (`useAuth.js`); el resto en camelCase (`formato.js`).
+- Carpetas de vistas y componentes, y archivos `.jsx`, en PascalCase (`ProductoDetalle/`, `PanelCompra.jsx`).
+  Las vistas terminan en `Page` (`ProductoDetallePage.jsx`); los hooks empiezan con `use` (`useAuth.js`); el
+  resto en camelCase (`formato.js`, `categorias.js`).
+- Clases CSS en camelCase (`styles.sinStock`), describiendo qué es, no cómo se ve (`precio`, no `textoGrande`).
 - Handlers con `handle` (`handleSubmit`, `handleEliminar`) y props de eventos con `on` (`onEliminar`).
 - Booleanos que se lean como pregunta: `esEdicion`, `cargando`, `tieneStock`.
 
@@ -86,22 +106,23 @@ Reglas:
 
   ```jsx
   import { generatePath, Link } from 'react-router'
-  import { PATHS } from '../routes/paths'
+  import { PATHS } from '@/routes/paths'
 
   ;<Link to={generatePath(PATHS.productoDetalle, { id: producto.id })}>{producto.nombre}</Link>
   ```
 
-- Pantalla nueva: crear el archivo en `pages/<seccion>/`, agregar la URL en `paths.js`, registrarla en
-  `AppRouter.jsx` dentro del grupo que corresponda (pública, `RutaPrivada` o `RutaAdmin`) y sumarla a la tabla
-  del README.
-- Para navegar como parte de una acción (después de guardar, de loguearse, etc.) usar `useNavigate`. Para
-  links usar `<Link>` o `<NavLink>`, nunca `<a href>` interno (recarga la app y pierde el estado).
+- Vista nueva: crear `src/pages/<Vista>/<Vista>Page.jsx`, agregar la URL en `paths.js`, registrarla en
+  `AppRouter.jsx` dentro del grupo que corresponda (pública, `RutaPrivada` o `RutaAdmin`), sumarla a
+  `MapaPantallas` y a la tabla del README.
+- Para navegar como parte de una acción (después de guardar, de loguearse) usar `useNavigate`. Para links usar
+  `<Link>` o `<NavLink>`, nunca `<a href>` interno (recarga la app y pierde el estado).
 - Los parámetros de URL llegan como string: convertir con `Number(id)` antes de compararlos con ids del back.
+- El buscador del header manda al inicio con `?q=texto`; el inicio filtra por nombre (no hay endpoint de búsqueda).
 
 ## API
 
-Todo pasa por `apiFetch` de `src/api/client.js`. Los componentes y páginas no llaman a `fetch` directo: llaman a
-funciones de `src/api/<recurso>.js`.
+Todo pasa por `apiFetch` de `src/api/client.js`. Las vistas no llaman a `fetch` directo: llaman a funciones de
+`src/api/<recurso>.js` (ver `categorias.js`).
 
 ```js
 // src/api/productos.js
@@ -124,7 +145,7 @@ export const crearProducto = (producto) => apiFetch('/productos', { method: 'POS
   `localStorage` bajo la clave `TOKEN_STORAGE_KEY`. El token dura 24 h; ante un 401 hay que cerrar la sesión y
   mandar al login.
 - Errores: `apiFetch` tira `ApiError` con `status` y `message`. El back siempre responde
-  `{ status, mensaje, timestamp }` y `mensaje` ya está pensado para mostrarse: mostralo tal cual en la pantalla.
+  `{ status, mensaje, timestamp }` y `mensaje` ya está pensado para mostrarse: mostralo tal cual.
 - Imágenes: `POST /api/productos/{id}/imagenes` es `multipart/form-data` con el campo `archivo`. Pasale un
   `FormData` a `apiFetch` y no pongas `Content-Type` (lo arma el navegador). La `url` que devuelve cada imagen se
   usa directo en `<img src>`.
@@ -144,11 +165,12 @@ Particularidades del back que hay que resolver en el front:
 
 Estado local (`useState`) por defecto. Context solo para lo que necesitan muchas pantallas a la vez:
 
-- `AuthContext` (`src/context/AuthContext.jsx` + hook `useAuth`). Expone
+- `AuthContext` (`src/context/AuthContext.jsx` + hook `src/hooks/useAuth.js`). Expone
   `{ usuario, token, estaLogueado, esAdmin, login(mail, contrasena), logout() }`. Guarda el token en
   `localStorage[TOKEN_STORAGE_KEY]` y el usuario (el `UsuarioResponseDTO` del login) en
-  `localStorage['marketplace.usuario']`. `RutaPrivada`, `RutaAdmin` y la `Navbar` leen de acá.
-- `CompraContext` (opcional, si hace falta mostrar la cantidad de productos en la navbar). El back es la fuente
+  `localStorage['marketplace.usuario']`. `RutaPrivada`, `RutaAdmin`, `MenuCuenta` y `MenuMovil` leen de acá (ya
+  tienen comentarios `TODO (auth)` donde va cada cosa).
+- `CompraContext` (opcional, si hace falta mostrar la cantidad de productos en el header). El back es la fuente
   de verdad: el context solo cachea `GET /api/carrito` y se refresca después de agregar, quitar o confirmar.
 
 Sin Redux, Zustand ni librerías de estado.
@@ -156,19 +178,24 @@ Sin Redux, Zustand ni librerías de estado.
 ## Estilos
 
 - Cada componente tiene su `Componente.module.css` y se usa como `className={styles.algo}`. Los únicos CSS
-  globales son `styles/tokens.css` y `styles/global.css`.
+  globales son `styles/tokens.css` y `styles/global.css`. Nada de `style={{…}}` salvo valores que se calculan en
+  tiempo de ejecución.
 - Nada de valores sueltos: colores, tamaños de letra, espaciados, radios y sombras salen de `tokens.css`
-  (`var(--color-tinta)`, `var(--espacio-4)`, `var(--texto-lg)`). Si falta un token, se agrega ahí y se avisa en
-  el PR.
+  (`var(--color-primario)`, `var(--espacio-4)`, `var(--texto-lg)`). Si falta un token, se agrega ahí y se avisa
+  en el PR.
 - Mobile first: los estilos base son para celular y se agregan `@media (min-width: …)` para pantallas más
   grandes. Cortes: 480, 768 y 1024 px. Probá cada pantalla a 320 px de ancho: no puede haber scroll horizontal.
-- Paleta "azul birome + resaltador": `--color-tinta` para todo lo accionable, `--color-resaltador` como acento
-  puntual (link activo, algún destacado) y siempre con texto oscuro encima, nunca como color de texto. Estados
-  con `--color-exito`, `--color-error` y `--color-aviso` (y sus `-suave` para fondos).
+- Paleta: fondo gris muy claro (`--color-fondo`), superficies blancas con borde (`--color-superficie`,
+  `--color-borde`), un solo color de marca para lo accionable (`--color-primario`) y colores de estado
+  (`--color-exito`, `--color-error`, `--color-aviso`, con sus `-suave` para fondos). No inventes colores nuevos.
 - Botones: clases globales `.boton` + `.boton-primario` (una sola acción principal por pantalla),
-  `.boton-secundario` o `.boton-peligro` (eliminar). Sirven en `<button>` y en `<Link>`.
-- Radios según jerarquía: `--radio-sm` botones e inputs, `--radio-md` tarjetas, `--radio-pill` chips. Sombras
-  solo en lo que flota o se toca (tarjetas de producto, menús).
+  `.boton-secundario`, `.boton-fantasma` o `.boton-peligro`, y `.boton-bloque` para ancho completo. Sirven en
+  `<button>` y en `<Link>`.
+- Radios según jerarquía: `--radio-sm` botones e inputs, `--radio-md` tarjetas y menús, `--radio-lg` bloques
+  grandes, `--radio-pill` chips y badges. Sombras solo en lo que flota o se toca (`--sombra-tarjeta`,
+  `--sombra-flotante`); el resto se separa con bordes.
+- Cada pantalla arranca con `EncabezadoPagina`; los vacíos y errores usan `EstadoVacio`.
+- Íconos de `lucide-react` con `size` 16 a 24 y `aria-hidden="true"` cuando acompañan un texto.
 - Precios y fechas siempre con `formatearPrecio` y `formatearFecha` de `src/utils/formato.js`.
 
 ## Formularios
@@ -187,12 +214,13 @@ Sin Redux, Zustand ni librerías de estado.
 
 ## Carga, error y vacío
 
-Toda pantalla que trae datos maneja tres estados además del normal:
+Toda vista que trae datos maneja tres estados además del normal:
 
 - Cargando: un texto o esqueleto simple; nunca la pantalla en blanco.
-- Error: qué pasó y qué hacer ("No pudimos cargar los productos. Revisá tu conexión y probá de nuevo." + botón
-  para reintentar).
-- Vacío: una invitación a actuar ("Todavía no publicaste productos." + botón "Publicar producto").
+- Error: `EstadoVacio` con qué pasó y qué hacer ("No pudimos cargar los productos." + botón para reintentar o
+  volver).
+- Vacío: `EstadoVacio` con una invitación a actuar ("Todavía no publicaste productos." + botón
+  "Publicar producto").
 
 ## Textos de la interfaz
 
@@ -206,7 +234,8 @@ Toda pantalla que trae datos maneja tres estados además del normal:
 
 ## Accesibilidad (mínimo obligatorio)
 
-- HTML semántico: `<button>` para acciones, `<Link>` para navegar, un solo `<h1>` por página y títulos en orden.
+- HTML semántico: `<button>` para acciones, `<Link>` para navegar, un solo `<h1>` por página (lo pone
+  `EncabezadoPagina`) y títulos en orden.
 - Toda `<img>` con `alt` descriptivo (el nombre del producto); `alt=""` solo si es decorativa.
 - Áreas táctiles de al menos 44 px (`--alto-control`). Inputs con letra de 16 px o más.
 - Foco visible: no quites el `outline` sin reemplazarlo.
@@ -217,8 +246,9 @@ Toda pantalla que trae datos maneja tres estados además del normal:
 Estos archivos los usamos todos. Cambiarlos rompe el trabajo de otros, así que cualquier cambio va en un PR
 propio o explicado en la descripción, y se avisa en el grupo:
 
-`src/routes/AppRouter.jsx`, `src/routes/paths.js`, `src/styles/tokens.css`, `src/styles/global.css`,
-`src/api/client.js`, `src/components/Navbar/`, `src/layouts/MainLayout.jsx`, `package.json`, este archivo.
+`src/routes/`, `src/styles/`, `src/api/client.js`, `src/components/` (Navbar, Footer, EncabezadoPagina,
+EstadoVacio, Logo, MapaPantallas), `src/layouts/MainLayout.jsx`, `package.json`, `vite.config.js`, este archivo y
+`CONTRIBUTING.md`.
 
 ## Git
 
@@ -231,10 +261,12 @@ propio o explicado en la descripción, y se avisa en el grupo:
 
 ## Qué no hacer
 
-- Instalar `react-router-dom`, axios, librerías de UI o de estado sin acordarlo.
+- Instalar `react-router-dom`, axios, librerías de UI, de íconos o de estado sin acordarlo.
 - Llamar a `fetch` fuera de `src/api/`, o escribir `http://localhost:8080` en el código.
 - Escribir colores, tamaños o URLs a mano en lugar de usar `tokens.css` y `paths.js`.
-- Crear archivos `.css` globales nuevos o estilos inline (`style={{…}}`) para cosas que van en un module.
+- Poner componentes sueltos en `pages/` fuera de la carpeta `components/` de su vista, o varios componentes en
+  un mismo archivo.
+- Crear archivos `.css` globales nuevos.
 - Pasar a TypeScript, cambiar la estructura de carpetas o reformatear archivos ajenos dentro de un PR de otra
   cosa.
 - Guardar la contraseña del usuario en ningún lado.

@@ -1,0 +1,25 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  color: var(--color-texto);
+  white-space: nowrap;
+}
+
+.isotipo {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.nombre {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-bold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.institucion {
+  color: var(--color-texto-suave);
+  font-weight: var(--peso-semibold);
+}

@@ -1,4 +1,8 @@
+import { Hammer } from 'lucide-react'
 import { useParams } from 'react-router'
+import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
+import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
+import { PATHS } from '@/routes/paths'
 
 /**
  * Alta y edición de producto (la misma pantalla para las dos rutas).
@@ -15,15 +19,32 @@ import { useParams } from 'react-router'
  *   DELETE /api/productos/{id}/imagenes/{imagenId}
  *
  * En el alta, las imágenes se suben después de crear el producto (hace falta su id).
+ *
+ * Componentes sugeridos: FormularioProducto, CargaImagenes.
  */
 export default function ProductoFormPage() {
   const { id } = useParams()
   const esEdicion = Boolean(id)
 
   return (
-    <section>
-      <h1>{esEdicion ? `Editar producto ${id}` : 'Publicar producto'}</h1>
-      <p className="texto-suave">Página en construcción.</p>
-    </section>
+    <>
+      <EncabezadoPagina
+        titulo={esEdicion ? 'Editar producto' : 'Publicar producto'}
+        descripcion={
+          esEdicion
+            ? 'Actualizá los datos, las fotos o el stock disponible.'
+            : 'Completá los datos y subí hasta 5 fotos de lo que querés vender.'
+        }
+        migas={[
+          { texto: 'Mis productos', to: PATHS.misProductos },
+          { texto: esEdicion ? 'Editar' : 'Publicar' },
+        ]}
+      />
+      <EstadoVacio
+        icono={Hammer}
+        titulo="Pantalla en desarrollo"
+        descripcion="Acá va el formulario con nombre, descripción, precio, stock, categoría y fotos del producto."
+      />
+    </>
   )
 }

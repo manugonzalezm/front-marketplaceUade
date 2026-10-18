@@ -3,47 +3,45 @@
  * nada de colores, tamaños de letra ni espaciados escritos a mano en los .module.css.
  * Si falta un valor, se agrega acá (y se avisa al grupo), no en el componente.
  *
- * Idea visual: "azul birome + resaltador". Fondo claro y neutro, el azul para
- * todo lo accionable y el verde resaltador como acento puntual.
- *
  * Breakpoints (mobile first, usar siempre min-width; las variables CSS no
  * funcionan dentro de @media, por eso van como comentario):
  *   480px  celular grande
- *   768px  tablet / escritorio chico
+ *   768px  tablet
  *   1024px escritorio
  */
 
 :root {
   /* Marca */
-  --color-tinta: #1f3fbf; /* acciones principales, links, foco */
-  --color-tinta-hover: #17318f; /* hover/pressed de lo anterior */
-  --color-tinta-suave: #e8ecfb; /* fondos de elementos seleccionados, chips */
-  --color-resaltador: #c8f169; /* acento: link activo, destacados. Usar poco y siempre con texto oscuro encima */
+  --color-primario: #2547d0; /* acciones principales, links, foco */
+  --color-primario-hover: #1c38a8;
+  --color-primario-suave: #ebeffc; /* fondo de elementos seleccionados, íconos destacados */
 
-  /* Neutros */
-  --color-fondo: #f5f6fa; /* fondo de la página */
-  --color-superficie: #ffffff; /* tarjetas, navbar, formularios, modales */
-  --color-borde: #dde1ec;
-  --color-texto: #1a1d29;
-  --color-texto-suave: #5b6175; /* textos secundarios, ayudas, placeholders */
-  --color-texto-invertido: #ffffff; /* texto sobre --color-tinta */
+  /* Neutros (grises fríos) */
+  --color-fondo: #f6f7f9; /* fondo de la página */
+  --color-superficie: #ffffff; /* tarjetas, header, formularios, menús */
+  --color-superficie-alt: #f1f3f6; /* buscador, filas alternas, zonas secundarias */
+  --color-borde: #e3e6eb; /* bordes y separadores */
+  --color-borde-fuerte: #cdd2da; /* bordes de inputs y botones secundarios */
+  --color-texto: #161a23;
+  --color-texto-suave: #5a6170; /* textos secundarios, ayudas, metadatos */
+  --color-texto-invertido: #ffffff; /* texto sobre --color-primario */
 
-  /* Estados (todos con contraste AA sobre blanco) */
+  /* Estados (texto con contraste AA sobre blanco; -suave para fondos) */
   --color-exito: #1e7f4f;
   --color-exito-suave: #e3f4ea;
   --color-error: #c42b2b;
   --color-error-suave: #fbe7e7;
-  --color-aviso: #9a5b00; /* ej.: "Últimas unidades", "Sin stock" */
+  --color-aviso: #9a5b00; /* "Últimas unidades", "Sin stock" */
   --color-aviso-suave: #fdf1dc;
 
   /* Tipografía: Figtree (variable, se importa en main.jsx) */
   --fuente-base: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  /* Escala 1.25 (tercera mayor) sobre base 16px */
-  --texto-xs: 0.8rem; /* 12.8px: notas legales, contadores */
-  --texto-sm: 0.875rem; /* 14px: textos de ayuda, etiquetas secundarias */
+  /* Escala 1.25 sobre base 16px */
+  --texto-xs: 0.8rem; /* 12.8px: badges, notas legales */
+  --texto-sm: 0.875rem; /* 14px: ayudas, metadatos, links del footer */
   --texto-base: 1rem; /* 16px: cuerpo. Nunca menos en inputs (evita el zoom en iOS) */
-  --texto-lg: 1.25rem; /* 20px: precios en tarjetas, subtítulos */
+  --texto-lg: 1.25rem; /* 20px: precio en tarjetas, subtítulos */
   --texto-xl: 1.5625rem; /* 25px: h2 */
   --texto-2xl: 1.953rem; /* 31px: h1 en celular, precio en el detalle */
   --texto-3xl: 2.441rem; /* 39px: h1 en escritorio */
@@ -66,19 +64,22 @@
   --espacio-7: 3rem; /* 48px */
   --espacio-8: 4rem; /* 64px */
 
-  /* Bordes redondeados: según jerarquía, no uno solo para todo */
-  --radio-sm: 6px; /* botones, inputs */
-  --radio-md: 12px; /* tarjetas de producto, paneles */
+  /* Bordes redondeados según jerarquía */
+  --radio-sm: 8px; /* botones, inputs, buscador */
+  --radio-md: 12px; /* tarjetas, paneles, menús */
+  --radio-lg: 16px; /* bloques grandes, modales */
   --radio-pill: 999px; /* chips, badges */
 
   /* Sombras: solo para lo que flota o se puede tocar */
-  --sombra-tarjeta: 0 1px 2px rgb(26 29 41 / 0.06), 0 2px 6px rgb(26 29 41 / 0.05);
-  --sombra-flotante: 0 8px 24px rgb(26 29 41 / 0.14);
+  --sombra-tarjeta: 0 1px 2px rgb(22 26 35 / 0.05), 0 1px 3px rgb(22 26 35 / 0.04);
+  --sombra-tarjeta-hover: 0 4px 12px rgb(22 26 35 / 0.08);
+  --sombra-flotante: 0 12px 32px rgb(22 26 35 / 0.14), 0 2px 6px rgb(22 26 35 / 0.06);
 
   /* Layout */
-  --ancho-max: 1200px;
+  --ancho-max: 1240px;
   --margen-lateral: var(--espacio-4); /* 16px en celular */
-  --alto-control: 2.75rem; /* 44px: alto mínimo de botones e inputs (área táctil) */
+  --alto-control: 2.75rem; /* 44px: alto de botones e inputs (área táctil mínima) */
+  --alto-header: 4rem;
 
   --transicion: 150ms ease;
 }

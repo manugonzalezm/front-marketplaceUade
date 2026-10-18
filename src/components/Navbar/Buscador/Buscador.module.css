@@ -1,0 +1,42 @@
+.buscador {
+  display: flex;
+  width: 100%;
+}
+
+/* Doble clase para ganarle a los estilos base de input en global.css */
+.buscador .input {
+  min-width: 0;
+  padding-inline: var(--espacio-4);
+  background: var(--color-superficie-alt);
+  border: 1px solid transparent;
+  border-radius: var(--radio-sm) 0 0 var(--radio-sm);
+}
+
+.buscador .input:hover {
+  border-color: var(--color-borde-fuerte);
+}
+
+.buscador .input:focus {
+  background: var(--color-superficie);
+  border-color: var(--color-primario);
+  box-shadow: none;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3.25rem;
+  min-height: var(--alto-control);
+  color: var(--color-texto-invertido);
+  background: var(--color-primario);
+  border: 0;
+  border-radius: 0 var(--radio-sm) var(--radio-sm) 0;
+  cursor: pointer;
+  transition: background-color var(--transicion);
+}
+
+.boton:hover {
+  background: var(--color-primario-hover);
+}

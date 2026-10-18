@@ -34,64 +34,73 @@ Se abre en [http://localhost:5173](http://localhost:5173). En desarrollo, Vite r
 
 ## Pantallas
 
-Todas las rutas están definidas en `src/routes/AppRouter.jsx` y sus URLs en `src/routes/paths.js`. Por ahora
-cada página es un título y un comentario con los endpoints que va a usar.
+Las rutas están en `src/routes/AppRouter.jsx` y sus URLs en `src/routes/paths.js`. Cada pantalla tiene su carpeta
+en `src/pages/`; por ahora muestran su encabezado y un aviso de "Pantalla en desarrollo", con un comentario
+arriba que dice qué endpoints usar.
 
-| Ruta                        | Pantalla                        | Archivo                                   | Acceso     |
-| --------------------------- | ------------------------------- | ----------------------------------------- | ---------- |
-| `/`                         | Inicio (productos y categorías) | `pages/HomePage.jsx`                      | Pública    |
-| `/login`                    | Ingresar                        | `pages/auth/LoginPage.jsx`                | Pública    |
-| `/registro`                 | Crear cuenta                    | `pages/auth/RegistroPage.jsx`             | Pública    |
-| `/productos/:id`            | Detalle de producto             | `pages/productos/ProductoDetallePage.jsx` | Pública    |
-| `/categorias/:id`           | Productos de una categoría      | `pages/productos/CategoriaPage.jsx`       | Pública    |
-| `/compra`                   | Mi compra (compra en curso)     | `pages/compra/CompraPage.jsx`             | Con sesión |
-| `/compra/confirmada`        | Compra confirmada               | `pages/compra/CompraConfirmadaPage.jsx`   | Con sesión |
-| `/mis-productos`            | Mis productos                   | `pages/vendedor/MisProductosPage.jsx`     | Con sesión |
-| `/mis-productos/nuevo`      | Publicar producto               | `pages/vendedor/ProductoFormPage.jsx`     | Con sesión |
-| `/mis-productos/:id/editar` | Editar producto y stock         | `pages/vendedor/ProductoFormPage.jsx`     | Con sesión |
-| `/perfil`                   | Mi perfil                       | `pages/usuario/PerfilPage.jsx`            | Con sesión |
-| `/admin/categorias`         | Administrar categorías          | `pages/admin/AdminCategoriasPage.jsx`     | Admin      |
-| `/admin/usuarios`           | Administrar usuarios            | `pages/admin/AdminUsuariosPage.jsx`       | Admin      |
-| cualquier otra              | Página no encontrada            | `pages/NotFoundPage.jsx`                  | Pública    |
+| Ruta                        | Pantalla                        | Carpeta                   | Acceso     |
+| --------------------------- | ------------------------------- | ------------------------- | ---------- |
+| `/`                         | Inicio (productos y categorías) | `pages/Home/`             | Pública    |
+| `/login`                    | Ingresar                        | `pages/Login/`            | Pública    |
+| `/registro`                 | Crear cuenta                    | `pages/Registro/`         | Pública    |
+| `/productos/:id`            | Detalle de producto             | `pages/ProductoDetalle/`  | Pública    |
+| `/categorias/:id`           | Productos de una categoría      | `pages/Categoria/`        | Pública    |
+| `/compra`                   | Mi compra (compra en curso)     | `pages/Compra/`           | Con sesión |
+| `/compra/confirmada`        | Compra confirmada               | `pages/CompraConfirmada/` | Con sesión |
+| `/mis-productos`            | Mis productos                   | `pages/MisProductos/`     | Con sesión |
+| `/mis-productos/nuevo`      | Publicar producto               | `pages/ProductoForm/`     | Con sesión |
+| `/mis-productos/:id/editar` | Editar producto y stock         | `pages/ProductoForm/`     | Con sesión |
+| `/perfil`                   | Mi perfil                       | `pages/Perfil/`           | Con sesión |
+| `/admin/categorias`         | Administrar categorías          | `pages/AdminCategorias/`  | Admin      |
+| `/admin/usuarios`           | Administrar usuarios            | `pages/AdminUsuarios/`    | Admin      |
+| cualquier otra              | Página no encontrada            | `pages/NotFound/`         | Pública    |
 
 Las rutas "Con sesión" y "Admin" ya están envueltas en `RutaPrivada` y `RutaAdmin`, que por ahora dejan pasar a
 todos; cuando esté el login van a redirigir.
 
-La navbar tiene links a todas las pantallas. Las que se abren desde otra página (detalle, edición, compra
-confirmada) aparecen en la franja "Atajos de desarrollo", que solo se ve con `npm run dev`.
+**Navegación.** El header tiene el buscador, "Publicar", el menú "Mi cuenta" (ingreso, perfil, mis productos y
+administración), "Mi compra" y la barra de categorías (se carga desde el back). En celular todo eso va en el
+menú lateral. Las pantallas que se abren desde otra (detalle, edición, compra confirmada) están en el botón
+**Pantallas**, abajo a la derecha, que solo aparece con `npm run dev`.
 
 ## Estructura
 
 ```
 src/
-├── api/            client.js: el único lugar que llama a fetch
-├── components/     componentes reutilizables (Navbar, y lo que vayamos sumando)
-├── layouts/        MainLayout: navbar + contenido de cada página
-├── pages/          una carpeta por sección, un archivo por pantalla
+├── api/            client.js (el único lugar que llama a fetch) + un módulo por recurso
+├── components/     compartidos: Navbar, Footer, EncabezadoPagina, EstadoVacio, Logo, MapaPantallas
+├── layouts/        MainLayout: header + contenido + footer
+├── pages/          una carpeta por vista; adentro, components/ con los componentes de esa vista
 ├── routes/         AppRouter, paths y las guardas RutaPrivada / RutaAdmin
 ├── styles/         tokens.css (colores, tipografía, espaciado) y global.css
 ├── utils/          formatearPrecio, formatearFecha
 └── main.jsx        punto de entrada
 ```
 
+Cada componente vive en su carpeta con su `.jsx` y su `.module.css`. Los imports usan el alias `@` para `src/`
+(`import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'`).
+
 ## Estilos base
 
 Todo sale de `src/styles/tokens.css`: no se escriben colores ni tamaños a mano en los componentes.
 
-| Token                 | Valor     | Uso                                      |
-| --------------------- | --------- | ---------------------------------------- |
-| `--color-tinta`       | `#1f3fbf` | Botones principales, links, foco         |
-| `--color-resaltador`  | `#c8f169` | Acento puntual (link activo, destacados) |
-| `--color-fondo`       | `#f5f6fa` | Fondo de la página                       |
-| `--color-superficie`  | `#ffffff` | Tarjetas, navbar, formularios            |
-| `--color-texto`       | `#1a1d29` | Texto principal                          |
-| `--color-texto-suave` | `#5b6175` | Texto secundario                         |
+| Token                    | Valor     | Uso                                  |
+| ------------------------ | --------- | ------------------------------------ |
+| `--color-primario`       | `#2547d0` | Botones principales, links, foco     |
+| `--color-fondo`          | `#f6f7f9` | Fondo de la página                   |
+| `--color-superficie`     | `#ffffff` | Tarjetas, header, formularios, menús |
+| `--color-superficie-alt` | `#f1f3f6` | Buscador, zonas secundarias, hover   |
+| `--color-borde`          | `#e3e6eb` | Bordes y separadores                 |
+| `--color-texto`          | `#161a23` | Texto principal                      |
+| `--color-texto-suave`    | `#5a6170` | Texto secundario                     |
 
-Tipografía: **Figtree** (incluida como dependencia, no depende de Google Fonts), escala 1.25 sobre 16 px.
-Diseño _mobile first_ con cortes en 480, 768 y 1024 px. Hay clases globales para botones (`.boton`,
-`.boton-primario`, `.boton-secundario`, `.boton-peligro`) y layout (`.contenedor`).
+Más colores de estado (éxito, error, aviso), escala tipográfica, espaciado, radios y sombras en el mismo archivo.
+Tipografía **Figtree** (incluida como dependencia), íconos **lucide-react**. Diseño _mobile first_ con cortes en
+480, 768 y 1024 px. Clases globales para botones (`.boton`, `.boton-primario`, `.boton-secundario`,
+`.boton-fantasma`, `.boton-peligro`, `.boton-bloque`) y layout (`.contenedor`).
 
 ## Cómo trabajamos
 
-Las convenciones del proyecto (estructura, ruteo, API, estilos, textos, git) están en [AGENTS.md](AGENTS.md).
-Leelo antes de empezar tu parte; si usás un asistente de IA (Claude Code, Copilot, Cursor, Codex), lo lee solo.
+- [CONTRIBUTING.md](CONTRIBUTING.md): paso a paso para encarar tu pantalla, con un ejemplo completo.
+- [AGENTS.md](AGENTS.md): las convenciones del proyecto (estructura, ruteo, API, estilos, textos, git). Si usás
+  un asistente de IA (Claude Code, Copilot, Cursor, Codex), lo lee solo.

@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router'
-import Navbar from '../components/Navbar/Navbar'
+import Footer from '@/components/Footer/Footer'
+import MapaPantallas from '@/components/MapaPantallas/MapaPantallas'
+import Navbar from '@/components/Navbar/Navbar'
 import styles from './MainLayout.module.css'
 
 export default function MainLayout() {
@@ -12,6 +14,8 @@ export default function MainLayout() {
       <main id="contenido" className={`contenedor ${styles.main}`}>
         <Outlet />
       </main>
+      <Footer />
+      {import.meta.env.DEV && <MapaPantallas />}
     </>
   )
 }
