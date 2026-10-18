@@ -102,11 +102,12 @@ Tipografía **Figtree** (incluida como dependencia), íconos **lucide-react**. D
 ## Deploy en Vercel
 
 El repo está vinculado a Vercel: cada push a `main` publica la versión de producción y cada PR genera un preview
-con su propia URL. Vercel detecta Vite solo (build `npm run build`, salida `dist/`), no hay que tocar nada en
-la configuración del proyecto.
+con su propia URL.
 
-`vercel.json` resuelve dos cosas:
+`vercel.json` resuelve tres cosas:
 
+- **Build.** Fija el framework (Vite), el comando (`npm run build`) y la carpeta de salida (`dist/`). Pisa lo que
+  diga la configuración del proyecto en Vercel, así no depende de que alguien la toque.
 - **Rutas del front.** Cualquier URL que no empiece con `/api/` devuelve `index.html`, así entrar directo a
   `/productos/3` o recargar la página no da 404.
 - **Caché de la API.** Las respuestas de `/api` no se cachean en Vercel (son datos por usuario).

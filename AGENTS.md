@@ -259,6 +259,10 @@ este archivo y `CONTRIBUTING.md`.
 - Antes de abrir el PR: `npm run lint`, `npm run format:check` y `npm run build` sin errores, y probar la
   pantalla en celular (320 px) y escritorio.
 - No se suben `node_modules/`, `dist/` ni archivos `.env*.local`. `package-lock.json` sí se sube.
+- Mayúsculas en nombres de archivos y carpetas: macOS y Windows no las distinguen, pero Vercel (Linux) sí. Para
+  renombrar algo cambiando solo mayúsculas/minúsculas (`compra/` → `Compra/`), usá `git mv` en dos pasos con un
+  nombre intermedio; si no, git no registra el cambio y el build de Vercel falla con "Could not load".
+  Verificalo con `git ls-files <carpeta>`.
 
 ## Qué no hacer
 
