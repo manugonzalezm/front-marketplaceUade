@@ -1,0 +1,90 @@
+/*
+ * Tokens de diseño del marketplace. Todos los componentes usan estas variables:
+ * nada de colores, tamaños de letra ni espaciados escritos a mano en los .module.css.
+ * Si falta un valor, se agrega acá (y se avisa al grupo), no en el componente.
+ *
+ * Idea visual: "azul birome + resaltador". Fondo claro y neutro, el azul para
+ * todo lo accionable y el verde resaltador como acento puntual.
+ *
+ * Breakpoints (mobile first, usar siempre min-width; las variables CSS no
+ * funcionan dentro de @media, por eso van como comentario):
+ *   480px  celular grande
+ *   768px  tablet / escritorio chico
+ *   1024px escritorio
+ */
+
+:root {
+  /* Marca */
+  --color-tinta: #1f3fbf; /* acciones principales, links, foco */
+  --color-tinta-hover: #17318f; /* hover/pressed de lo anterior */
+  --color-tinta-suave: #e8ecfb; /* fondos de elementos seleccionados, chips */
+  --color-resaltador: #c8f169; /* acento: link activo, destacados. Usar poco y siempre con texto oscuro encima */
+
+  /* Neutros */
+  --color-fondo: #f5f6fa; /* fondo de la página */
+  --color-superficie: #ffffff; /* tarjetas, navbar, formularios, modales */
+  --color-borde: #dde1ec;
+  --color-texto: #1a1d29;
+  --color-texto-suave: #5b6175; /* textos secundarios, ayudas, placeholders */
+  --color-texto-invertido: #ffffff; /* texto sobre --color-tinta */
+
+  /* Estados (todos con contraste AA sobre blanco) */
+  --color-exito: #1e7f4f;
+  --color-exito-suave: #e3f4ea;
+  --color-error: #c42b2b;
+  --color-error-suave: #fbe7e7;
+  --color-aviso: #9a5b00; /* ej.: "Últimas unidades", "Sin stock" */
+  --color-aviso-suave: #fdf1dc;
+
+  /* Tipografía: Figtree (variable, se importa en main.jsx) */
+  --fuente-base: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Escala 1.25 (tercera mayor) sobre base 16px */
+  --texto-xs: 0.8rem; /* 12.8px: notas legales, contadores */
+  --texto-sm: 0.875rem; /* 14px: textos de ayuda, etiquetas secundarias */
+  --texto-base: 1rem; /* 16px: cuerpo. Nunca menos en inputs (evita el zoom en iOS) */
+  --texto-lg: 1.25rem; /* 20px: precios en tarjetas, subtítulos */
+  --texto-xl: 1.5625rem; /* 25px: h2 */
+  --texto-2xl: 1.953rem; /* 31px: h1 en celular, precio en el detalle */
+  --texto-3xl: 2.441rem; /* 39px: h1 en escritorio */
+
+  --peso-normal: 400;
+  --peso-medio: 500;
+  --peso-semibold: 600;
+  --peso-bold: 700;
+
+  --interlineado-base: 1.5;
+  --interlineado-titulos: 1.2;
+
+  /* Espaciado (múltiplos de 4px) */
+  --espacio-1: 0.25rem; /* 4px */
+  --espacio-2: 0.5rem; /* 8px */
+  --espacio-3: 0.75rem; /* 12px */
+  --espacio-4: 1rem; /* 16px */
+  --espacio-5: 1.5rem; /* 24px */
+  --espacio-6: 2rem; /* 32px */
+  --espacio-7: 3rem; /* 48px */
+  --espacio-8: 4rem; /* 64px */
+
+  /* Bordes redondeados: según jerarquía, no uno solo para todo */
+  --radio-sm: 6px; /* botones, inputs */
+  --radio-md: 12px; /* tarjetas de producto, paneles */
+  --radio-pill: 999px; /* chips, badges */
+
+  /* Sombras: solo para lo que flota o se puede tocar */
+  --sombra-tarjeta: 0 1px 2px rgb(26 29 41 / 0.06), 0 2px 6px rgb(26 29 41 / 0.05);
+  --sombra-flotante: 0 8px 24px rgb(26 29 41 / 0.14);
+
+  /* Layout */
+  --ancho-max: 1200px;
+  --margen-lateral: var(--espacio-4); /* 16px en celular */
+  --alto-control: 2.75rem; /* 44px: alto mínimo de botones e inputs (área táctil) */
+
+  --transicion: 150ms ease;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --margen-lateral: var(--espacio-5);
+  }
+}

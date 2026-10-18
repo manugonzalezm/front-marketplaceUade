@@ -1,0 +1,239 @@
+/*
+ * Estilos globales: reset mínimo, elementos HTML base y unas pocas clases
+ * compartidas. Los estilos de cada componente van en su propio .module.css.
+ *
+ * Clases globales disponibles:
+ *   .contenedor                 ancho máximo + márgenes laterales
+ *   .boton                      base de botón (sirve en <button> y en <Link>)
+ *   .boton-primario             acción principal de la pantalla (una sola por pantalla)
+ *   .boton-secundario           acciones secundarias
+ *   .boton-peligro              acciones destructivas (eliminar)
+ *   .texto-suave                texto secundario
+ *   .solo-lectores              oculto en pantalla, visible para lectores de pantalla
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-base);
+  font-size: var(--texto-base);
+  line-height: var(--interlineado-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--espacio-3);
+  line-height: var(--interlineado-titulos);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-bold);
+}
+
+h2 {
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-semibold);
+}
+
+h3 {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-semibold);
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: var(--texto-3xl);
+  }
+}
+
+p {
+  margin: 0 0 var(--espacio-4);
+  max-width: 70ch;
+}
+
+a {
+  color: var(--color-tinta);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--color-tinta-hover);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Formularios */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+label {
+  display: block;
+  margin-bottom: var(--espacio-1);
+  font-weight: var(--peso-medio);
+}
+
+input:not([type='checkbox'], [type='radio'], [type='file']),
+select,
+textarea {
+  width: 100%;
+  min-height: var(--alto-control);
+  padding: var(--espacio-2) var(--espacio-3);
+  font-size: var(--texto-base);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-texto-suave);
+}
+
+input[aria-invalid='true'],
+select[aria-invalid='true'],
+textarea[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+/* Foco visible para teclado en todo el sitio */
+:focus-visible {
+  outline: 2px solid var(--color-tinta);
+  outline-offset: 2px;
+}
+
+/* Layout */
+.contenedor {
+  width: 100%;
+  max-width: calc(var(--ancho-max) + 2 * var(--margen-lateral));
+  margin-inline: auto;
+  padding-inline: var(--margen-lateral);
+}
+
+/* Botones */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
+  min-height: var(--alto-control);
+  padding: var(--espacio-2) var(--espacio-4);
+  font-weight: var(--peso-semibold);
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--transicion),
+    border-color var(--transicion),
+    color var(--transicion);
+}
+
+.boton:disabled,
+.boton[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.boton-primario {
+  color: var(--color-texto-invertido);
+  background: var(--color-tinta);
+}
+
+.boton-primario:hover {
+  color: var(--color-texto-invertido);
+  background: var(--color-tinta-hover);
+}
+
+.boton-secundario {
+  color: var(--color-tinta);
+  background: var(--color-superficie);
+  border-color: var(--color-borde);
+}
+
+.boton-secundario:hover {
+  color: var(--color-tinta-hover);
+  border-color: var(--color-tinta);
+}
+
+.boton-peligro {
+  color: var(--color-error);
+  background: var(--color-superficie);
+  border-color: var(--color-error);
+}
+
+.boton-peligro:hover {
+  color: var(--color-texto-invertido);
+  background: var(--color-error);
+}
+
+/* Utilidades */
+.texto-suave {
+  color: var(--color-texto-suave);
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.saltar-al-contenido {
+  position: absolute;
+  top: var(--espacio-2);
+  left: var(--espacio-2);
+  z-index: 100;
+  padding: var(--espacio-2) var(--espacio-4);
+  color: var(--color-texto-invertido);
+  background: var(--color-tinta);
+  border-radius: var(--radio-sm);
+  transform: translateY(-200%);
+}
+
+.saltar-al-contenido:focus {
+  color: var(--color-texto-invertido);
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

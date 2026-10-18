@@ -1,0 +1,9 @@
+.main {
+  padding-block: var(--espacio-6) var(--espacio-8);
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-block: var(--espacio-7) var(--espacio-8);
+  }
+}
