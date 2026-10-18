@@ -4,6 +4,10 @@ import MapaPantallas from '@/components/MapaPantallas/MapaPantallas'
 import Navbar from '@/components/Navbar/Navbar'
 import styles from './MainLayout.module.css'
 
+// El botón "Pantallas" se ve con `npm run dev` y, en un deploy, si la variable de
+// entorno VITE_MOSTRAR_PANTALLAS vale "true" (útil en los previews de Vercel).
+const MOSTRAR_PANTALLAS = import.meta.env.DEV || import.meta.env.VITE_MOSTRAR_PANTALLAS === 'true'
+
 export default function MainLayout() {
   return (
     <>
@@ -15,7 +19,7 @@ export default function MainLayout() {
         <Outlet />
       </main>
       <Footer />
-      {import.meta.env.DEV && <MapaPantallas />}
+      {MOSTRAR_PANTALLAS && <MapaPantallas />}
     </>
   )
 }

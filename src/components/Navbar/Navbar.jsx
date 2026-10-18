@@ -16,7 +16,7 @@ export default function Navbar() {
     let cancelado = false
     getCategorias()
       .then((datos) => {
-        if (!cancelado) setCategorias(datos)
+        if (!cancelado && Array.isArray(datos)) setCategorias(datos)
       })
       // Sin back corriendo la barra de categorías simplemente no se muestra.
       .catch(() => {})

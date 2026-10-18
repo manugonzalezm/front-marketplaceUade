@@ -37,12 +37,22 @@ export async function apiFetch(ruta, { method = 'GET', body } = {}) {
 
   if (respuesta.status === 204) return null
 
-  const datos = await respuesta.json().catch(() => null)
+  const esJson = respuesta.headers.get('content-type')?.includes('application/json')
+  const datos = esJson ? await respuesta.json().catch(() => null) : null
 
   if (!respuesta.ok) {
     throw new ApiError(
       respuesta.status,
       datos?.mensaje ?? 'No se pudo completar la operación. Probá de nuevo.',
+    )
+  }
+
+  // Un 200 que no es JSON suele ser el index.html: /api no llegó al back
+  // (back apagado en desarrollo, o falta el rewrite de /api en vercel.json).
+  if (!esJson) {
+    throw new ApiError(
+      respuesta.status,
+      'No pudimos conectarnos con el servidor. Probá de nuevo en unos minutos.',
     )
   }
 

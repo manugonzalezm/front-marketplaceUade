@@ -6,7 +6,8 @@ import styles from './MapaPantallas.module.css'
 
 // Herramienta de desarrollo: acceso directo a todas las pantallas, incluidas las
 // que en la app se abren desde otra página (detalle, edición, confirmación).
-// MainLayout solo la muestra con `npm run dev`. Las rutas con :id usan el id 1.
+// MainLayout la muestra con `npm run dev` o con VITE_MOSTRAR_PANTALLAS=true.
+// Las rutas con :id usan el id 1.
 const GRUPOS = [
   {
     titulo: 'Públicas',
@@ -51,7 +52,7 @@ export default function MapaPantallas() {
       </summary>
 
       <div className={styles.panel}>
-        <p className={styles.aviso}>Atajos de desarrollo. No aparecen en la versión publicada.</p>
+        <p className={styles.aviso}>Atajos para el equipo. No se muestran en la versión final.</p>
         {GRUPOS.map((grupo) => (
           <div key={grupo.titulo} className={styles.grupo}>
             <p className={styles.grupoTitulo}>{grupo.titulo}</p>

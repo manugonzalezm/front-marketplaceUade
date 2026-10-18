@@ -140,7 +140,8 @@ export const crearProducto = (producto) => apiFetch('/productos', { method: 'POS
 ```
 
 - Las rutas van sin host (`'/productos'`, no `http://localhost:8080/api/productos`). En desarrollo el proxy de
-  Vite manda `/api` al 8080. El back no tiene CORS configurado: no cambies esto por una URL absoluta.
+  Vite manda `/api` al 8080; en Vercel lo hace un rewrite de `vercel.json`. El back no tiene CORS configurado: no
+  cambies esto por una URL absoluta ni por una variable `VITE_API_URL`.
 - Autenticación: JWT en el header `Authorization: Bearer <token>`. `apiFetch` lo agrega solo si hay token en
   `localStorage` bajo la clave `TOKEN_STORAGE_KEY`. El token dura 24 h; ante un 401 hay que cerrar la sesión y
   mandar al login.
@@ -247,8 +248,8 @@ Estos archivos los usamos todos. Cambiarlos rompe el trabajo de otros, así que 
 propio o explicado en la descripción, y se avisa en el grupo:
 
 `src/routes/`, `src/styles/`, `src/api/client.js`, `src/components/` (Navbar, Footer, EncabezadoPagina,
-EstadoVacio, Logo, MapaPantallas), `src/layouts/MainLayout.jsx`, `package.json`, `vite.config.js`, este archivo y
-`CONTRIBUTING.md`.
+EstadoVacio, Logo, MapaPantallas), `src/layouts/MainLayout.jsx`, `package.json`, `vite.config.js`, `vercel.json`,
+este archivo y `CONTRIBUTING.md`.
 
 ## Git
 

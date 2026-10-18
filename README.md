@@ -99,6 +99,30 @@ Tipografía **Figtree** (incluida como dependencia), íconos **lucide-react**. D
 480, 768 y 1024 px. Clases globales para botones (`.boton`, `.boton-primario`, `.boton-secundario`,
 `.boton-fantasma`, `.boton-peligro`, `.boton-bloque`) y layout (`.contenedor`).
 
+## Deploy en Vercel
+
+El repo está vinculado a Vercel: cada push a `main` publica la versión de producción y cada PR genera un preview
+con su propia URL. Vercel detecta Vite solo (build `npm run build`, salida `dist/`), no hay que tocar nada en
+la configuración del proyecto.
+
+`vercel.json` resuelve dos cosas:
+
+- **Rutas del front.** Cualquier URL que no empiece con `/api/` devuelve `index.html`, así entrar directo a
+  `/productos/3` o recargar la página no da 404.
+- **Caché de la API.** Las respuestas de `/api` no se cachean en Vercel (son datos por usuario).
+
+Mientras el back no esté publicado, el sitio en Vercel funciona pero sin datos: la barra de categorías no aparece
+y las llamadas a `/api` dan error. Cuando el back tenga una URL pública, se agrega este rewrite **primero** en la
+lista de `rewrites` de `vercel.json` (Vercel hace de proxy, así que tampoco hace falta CORS):
+
+```json
+{ "source": "/api/:path*", "destination": "https://URL-DEL-BACK/api/:path*" }
+```
+
+Para ver el botón **Pantallas** en los previews, en Vercel → Settings → Environment Variables agregá
+`VITE_MOSTRAR_PANTALLAS` con valor `true` para el entorno Preview (y Production si lo quieren ahí también), y
+volvé a desplegar.
+
 ## Cómo trabajamos
 
 - [CONTRIBUTING.md](CONTRIBUTING.md): paso a paso para encarar tu pantalla, con un ejemplo completo.
