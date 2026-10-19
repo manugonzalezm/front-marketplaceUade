@@ -74,6 +74,36 @@
   border-bottom: 1px solid var(--color-borde);
 }
 
+.usuario {
+  padding: var(--espacio-4);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.usuarioNombre,
+.usuarioMail {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.usuarioNombre {
+  font-weight: var(--peso-semibold);
+}
+
+.usuarioMail {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.link.salir {
+  width: 100%;
+  margin-top: var(--espacio-2);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--color-borde);
+  border-radius: 0;
+  cursor: pointer;
+}
+
 .secciones {
   display: flex;
   flex-direction: column;
