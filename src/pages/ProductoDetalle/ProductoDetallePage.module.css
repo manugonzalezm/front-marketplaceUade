@@ -1,0 +1,34 @@
+/* Solo el layout de la vista: la grilla y las alertas. Cada componente trae su CSS. */
+.contenido {
+  display: grid;
+  gap: var(--espacio-5);
+}
+
+.columnaPrincipal {
+  display: grid;
+  gap: var(--espacio-5);
+  align-content: start;
+}
+
+.error,
+.exito {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-radius: var(--radio-sm);
+}
+
+.error {
+  color: var(--color-error);
+  background: var(--color-error-suave);
+}
+
+.exito {
+  color: var(--color-exito);
+  background: var(--color-exito-suave);
+}
+
+@media (min-width: 768px) {
+  .contenido {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}

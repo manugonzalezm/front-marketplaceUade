@@ -1,0 +1,25 @@
+.panel {
+  display: grid;
+  gap: var(--espacio-3);
+  padding: var(--espacio-5);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+}
+
+.precio {
+  margin: 0;
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-bold);
+}
+
+.stock {
+  margin: 0;
+  color: var(--color-texto-suave);
+}
+
+.sinStock {
+  margin: 0;
+  color: var(--color-aviso);
+  font-weight: var(--peso-semibold);
+}
