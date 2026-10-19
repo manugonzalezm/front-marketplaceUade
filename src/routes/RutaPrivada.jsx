@@ -1,14 +1,16 @@
-import { Outlet } from 'react-router'
+import { Navigate, Outlet, useLocation } from 'react-router'
+import { useAuth } from '@/hooks/useAuth'
+import { PATHS } from './paths'
 
 /**
- * Envuelve las rutas que requieren sesión iniciada.
- *
- * Por ahora deja pasar a todos para poder navegar el esqueleto.
- * TODO (auth): cuando exista el AuthContext, si no hay token redirigir al login
- * recordando a dónde quería ir el usuario:
- *   const location = useLocation()
- *   if (!token) return <Navigate to={PATHS.login} replace state={{ desde: location }} />
+ * Envuelve las rutas que requieren sesión iniciada. Sin sesión manda al login
+ * recordando a dónde quería ir el usuario (LoginPage lo lee de state.desde y
+ * vuelve ahí después de ingresar).
  */
 export default function RutaPrivada() {
+  const { estaLogueado } = useAuth()
+  const location = useLocation()
+
+  if (!estaLogueado) return <Navigate to={PATHS.login} replace state={{ desde: location }} />
   return <Outlet />
 }
