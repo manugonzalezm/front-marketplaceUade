@@ -1,0 +1,55 @@
+.pagina {
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.tarjeta {
+  display: grid;
+  gap: var(--espacio-4);
+  padding: var(--espacio-5) var(--espacio-4);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+}
+
+.error,
+.exito {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: var(--espacio-3) var(--espacio-4);
+  border-radius: var(--radio-sm);
+}
+
+.error {
+  color: var(--color-error);
+  background: var(--color-error-suave);
+}
+
+.exito {
+  color: var(--color-exito);
+  background: var(--color-exito-suave);
+}
+
+.exito svg {
+  flex-shrink: 0;
+}
+
+.alternativa {
+  margin: var(--espacio-5) 0 0;
+  color: var(--color-texto-suave);
+  text-align: center;
+}
+
+.alternativa a {
+  color: var(--color-primario);
+  font-weight: var(--peso-semibold);
+}
+
+@media (min-width: 480px) {
+  .tarjeta {
+    padding: var(--espacio-6);
+  }
+}

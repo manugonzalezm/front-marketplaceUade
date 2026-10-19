@@ -1,0 +1,8 @@
+.formulario {
+  display: grid;
+  gap: var(--espacio-4);
+}
+
+.formulario button[type='submit'] {
+  margin-top: var(--espacio-2);
+}
