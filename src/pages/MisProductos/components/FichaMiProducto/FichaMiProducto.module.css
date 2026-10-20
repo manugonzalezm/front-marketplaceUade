@@ -1,0 +1,55 @@
+.ficha {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  background: var(--color-superficie);
+}
+.portada {
+  position: relative;
+}
+.publicado,
+.pausado {
+  position: absolute;
+  top: var(--espacio-3);
+  left: var(--espacio-3);
+  padding: var(--espacio-1) var(--espacio-3);
+  border-radius: var(--radio-pill);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-semibold);
+}
+.publicado {
+  color: var(--color-exito);
+  background: var(--color-exito-suave);
+}
+.pausado {
+  color: var(--color-aviso);
+  background: var(--color-aviso-suave);
+}
+.contenido {
+  padding: var(--espacio-4);
+}
+.contenido h3 {
+  font-size: var(--texto-lg);
+  overflow-wrap: anywhere;
+}
+.precio {
+  margin-bottom: var(--espacio-2);
+  font-weight: var(--peso-bold);
+  font-size: var(--texto-xl);
+}
+.stock {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+  margin-bottom: var(--espacio-4);
+}
+.acciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-4);
+}
+.acciones > * {
+  padding-inline: var(--espacio-2);
+  font-size: var(--texto-sm);
+}
