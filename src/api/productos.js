@@ -17,3 +17,11 @@ export const getProducto = (id) => apiFetch(`/productos/${id}`)
 
 /** GET /api/productos/{id}/imagenes -> [{ id, nombreArchivo, tipoContenido, tamanio, url }] */
 export const getProductoImagenes = (id) => apiFetch(`/productos/${id}/imagenes`)
+
+
+/** DELETE /api/productos/{id} -> 204 (solo el dueño del producto) */
+export const eliminarProducto = (id) => apiFetch(`/productos/${id}`, { method: 'DELETE' })
+
+/** DELETE /api/productos/{id}/imagenes/{imagenId} -> 204 (solo el dueño del producto) */
+export const eliminarImagen = (productoId, imagenId) =>
+  apiFetch(`/productos/${productoId}/imagenes/${imagenId}`, { method: 'DELETE' })

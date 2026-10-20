@@ -1,23 +1,17 @@
 import { CheckCircle2, Package, Plus, RefreshCw } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
-import {
-  USUARIO_DEMO,
-  eliminarImagen,
-  eliminarProducto,
-  getImagenesProducto,
-  getMisProductos,
-} from '@/api/misProductosDemo'
+import { eliminarImagen, eliminarProducto, getProductoImagenes, getProductos } from '@/api/productos'
 import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
 import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
+import { useAuth } from '@/hooks/useAuth'
 import { PATHS } from '@/routes/paths'
 import ConfirmarEliminacion from './components/ConfirmarEliminacion/ConfirmarEliminacion'
 import FichaMiProducto from './components/FichaMiProducto/FichaMiProducto'
 import styles from './MisProductosPage.module.css'
 
 export default function MisProductosPage() {
-  // Integración pendiente: const { usuario } = useAuth(). No simular una sesión global.
-  const usuario = USUARIO_DEMO
+  const { usuario } = useAuth()
   const [productos, setProductos] = useState([])
   const [imagenes, setImagenes] = useState({})
   const [carga, setCarga] = useState({ solicitud: null, error: '' })
@@ -44,9 +38,11 @@ export default function MisProductosPage() {
     let cancelado = false
     async function cargar() {
       try {
-        const lista = await getMisProductos(usuario.id)
+        const lista = (await getProductos({ usuarioId: usuario.id })).sort((a, b) =>
+          a.nombre.localeCompare(b.nombre, 'es'),
+        )
         const fotos = await Promise.all(
-          lista.map(async (producto) => [producto.id, await getImagenesProducto(producto.id, usuario.id)]),
+          lista.map(async (producto) => [producto.id, await getProductoImagenes(producto.id)]),
         )
         if (!cancelado) {
           setProductos(lista)
@@ -87,8 +83,8 @@ export default function MisProductosPage() {
     setErrorEliminacion('')
     const { producto, imagen, indice } = pendiente
     try {
-      if (imagen) await eliminarImagen(producto.id, imagen.id, usuario.id)
-      else await eliminarProducto(producto.id, usuario.id)
+      if (imagen) await eliminarImagen(producto.id, imagen.id)
+      else await eliminarProducto(producto.id)
       if (!montada.current) return
       if (imagen) {
         setImagenes((actuales) => ({
