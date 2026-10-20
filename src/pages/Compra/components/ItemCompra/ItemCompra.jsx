@@ -33,8 +33,8 @@ export default function ItemCompra({ item, eliminando = false, deshabilitado = f
         aria-busy={eliminando}
         aria-label={
           eliminando
-            ? `Eliminando ${item.nombreProducto} de mi compra`
-            : `Eliminar ${item.nombreProducto} de mi compra`
+            ? `Eliminando ${item.nombreProducto} de tu compra`
+            : `Eliminar ${item.nombreProducto} de tu compra`
         }
       >
         <Trash2 size={18} aria-hidden="true" />

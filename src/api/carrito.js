@@ -12,3 +12,6 @@ export const agregarAlCarrito = ({ productoId, cantidad }) =>
 
 /** DELETE /api/carrito/items/{itemId} -> 204 */
 export const eliminarItemCarrito = (itemId) => apiFetch(`/carrito/items/${itemId}`, { method: 'DELETE' })
+
+/** DELETE /api/carrito -> 204 */
+export const vaciarCarrito = () => apiFetch('/carrito', { method: 'DELETE' })

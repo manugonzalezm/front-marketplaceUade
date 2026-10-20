@@ -1,10 +1,11 @@
 import { PackageX, RefreshCw, ShoppingCart } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
-import { eliminarItemCarrito, getCarrito } from '@/api/carrito'
+import { eliminarItemCarrito, getCarrito, vaciarCarrito } from '@/api/carrito'
 import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
 import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
 import { PATHS } from '@/routes/paths'
+import ConfirmarVaciar from './components/ConfirmarVaciar/ConfirmarVaciar'
 import ItemCompra from './components/ItemCompra/ItemCompra'
 import ResumenCompra from './components/ResumenCompra/ResumenCompra'
 import styles from './CompraPage.module.css'
@@ -16,6 +17,9 @@ export default function CompraPage() {
   const [errorEliminacion, setErrorEliminacion] = useState('')
   const [aviso, setAviso] = useState('')
   const [eliminandoId, setEliminandoId] = useState(null)
+  const [confirmandoVaciar, setConfirmandoVaciar] = useState(false)
+  const [errorVaciar, setErrorVaciar] = useState('')
+  const [vaciando, setVaciando] = useState(false)
   const [intento, setIntento] = useState(0)
   const operacionEnCurso = useRef(false)
   const montada = useRef(false)
@@ -55,6 +59,37 @@ export default function CompraPage() {
     setIntento((valor) => valor + 1)
   }
 
+  const handleAbrirVaciar = () => {
+    if (operacionEnCurso.current) return
+    setErrorEliminacion('')
+    setErrorVaciar('')
+    setAviso('')
+    setConfirmandoVaciar(true)
+  }
+
+  const handleCerrarVaciar = () => {
+    if (!operacionEnCurso.current) setConfirmandoVaciar(false)
+  }
+
+  const handleVaciar = async () => {
+    if (operacionEnCurso.current) return
+    operacionEnCurso.current = true
+    setVaciando(true)
+    setErrorVaciar('')
+    try {
+      await vaciarCarrito()
+      if (!montada.current) return
+      setItems([])
+      setConfirmandoVaciar(false)
+      setAviso('Vaciaste tu compra.')
+    } catch (err) {
+      if (montada.current) setErrorVaciar(err.message || 'No pudimos vaciar tu compra. Probá de nuevo.')
+    } finally {
+      operacionEnCurso.current = false
+      if (montada.current) setVaciando(false)
+    }
+  }
+
   const handleEliminar = async (item) => {
     if (operacionEnCurso.current) return
     operacionEnCurso.current = true
@@ -65,7 +100,7 @@ export default function CompraPage() {
       await eliminarItemCarrito(item.id)
       if (!montada.current) return
       setItems((actuales) => actuales.filter((elemento) => elemento.id !== item.id))
-      setAviso(`Eliminaste ${item.nombreProducto} de mi compra.`)
+      setAviso(`Eliminaste ${item.nombreProducto} de tu compra.`)
     } catch (err) {
       if (montada.current)
         setErrorEliminacion(err.message || 'No pudimos eliminar el producto. Probá de nuevo.')
@@ -129,15 +164,28 @@ export default function CompraPage() {
                   <ItemCompra
                     item={item}
                     eliminando={eliminandoId === item.id}
-                    deshabilitado={eliminandoId !== null}
+                    deshabilitado={eliminandoId !== null || vaciando}
                     onEliminar={() => handleEliminar(item)}
                   />
                 </li>
               ))}
             </ul>
           </section>
-          <ResumenCompra items={items} />
+          <ResumenCompra
+            items={items}
+            onVaciar={handleAbrirVaciar}
+            deshabilitado={eliminandoId !== null || vaciando}
+          />
         </div>
+      )}
+      {confirmandoVaciar && (
+        <ConfirmarVaciar
+          cantidad={items.length}
+          confirmando={vaciando}
+          error={errorVaciar}
+          onConfirmar={handleVaciar}
+          onCancelar={handleCerrarVaciar}
+        />
       )}
     </>
   )

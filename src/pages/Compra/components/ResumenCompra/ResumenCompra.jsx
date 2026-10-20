@@ -3,8 +3,8 @@ import { PATHS } from '@/routes/paths'
 import { formatearPrecio } from '@/utils/formato'
 import styles from './ResumenCompra.module.css'
 
-/** Cantidad de productos, total y acceso al checkout. */
-export default function ResumenCompra({ items }) {
+/** Cantidad de productos, total, checkout y acción para vaciar mi compra. */
+export default function ResumenCompra({ items, onVaciar, deshabilitado = false }) {
   const total = items.reduce((suma, item) => suma + item.precio * item.cantidad, 0)
 
   return (
@@ -22,6 +22,15 @@ export default function ResumenCompra({ items }) {
       <Link to={PATHS.checkout} className="boton boton-primario boton-bloque">
         Ir al checkout
       </Link>
+      <button
+        type="button"
+        className="boton boton-peligro boton-bloque"
+        onClick={onVaciar}
+        disabled={deshabilitado}
+        aria-haspopup="dialog"
+      >
+        Vaciar mi compra
+      </button>
     </aside>
   )
 }
