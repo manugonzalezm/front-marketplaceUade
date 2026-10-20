@@ -1,0 +1,45 @@
+{
+  "101": [
+    {
+      "id": 1001,
+      "nombreArchivo": "auriculares.png",
+      "tipoContenido": "image/png",
+      "tamanio": 27641,
+      "url": "/demo-mis-productos/imagenes/auriculares.png"
+    },
+    {
+      "id": 1002,
+      "nombreArchivo": "auriculares-detalle.png",
+      "tipoContenido": "image/png",
+      "tamanio": 27354,
+      "url": "/demo-mis-productos/imagenes/auriculares-detalle.png"
+    }
+  ],
+  "102": [],
+  "103": [
+    {
+      "id": 1003,
+      "nombreArchivo": "libro.png",
+      "tipoContenido": "image/png",
+      "tamanio": 23657,
+      "url": "/demo-mis-productos/imagenes/libro.png"
+    }
+  ],
+  "104": [
+    {
+      "id": 1004,
+      "nombreArchivo": "notebook.png",
+      "tipoContenido": "image/png",
+      "tamanio": 21554,
+      "url": "/demo-mis-productos/imagenes/notebook.png"
+    },
+    {
+      "id": 1005,
+      "nombreArchivo": "notebook-cerrada.png",
+      "tipoContenido": "image/png",
+      "tamanio": 24285,
+      "url": "/demo-mis-productos/imagenes/notebook-cerrada.png"
+    }
+  ],
+  "201": []
+}
