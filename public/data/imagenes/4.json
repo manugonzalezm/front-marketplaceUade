@@ -1,0 +1,16 @@
+[
+  {
+    "id": 7,
+    "nombreArchivo": "libro-1.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 72304,
+    "url": "/img/libro-1.webp"
+  },
+  {
+    "id": 8,
+    "nombreArchivo": "libro-2.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 69815,
+    "url": "/img/libro-2.webp"
+  }
+]

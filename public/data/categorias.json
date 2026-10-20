@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "nombre": "Libros y apuntes"
+  },
+  {
+    "id": 2,
+    "nombre": "Electrónica"
+  },
+  {
+    "id": 3,
+    "nombre": "Útiles escolares"
+  },
+  {
+    "id": 4,
+    "nombre": "Ropa"
+  },
+  {
+    "id": 5,
+    "nombre": "Muebles"
+  },
+  {
+    "id": 6,
+    "nombre": "Deportes"
+  }
+]

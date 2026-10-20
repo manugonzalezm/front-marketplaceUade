@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nombreArchivo": "calculadora-1.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 84213,
+    "url": "/img/calculadora-1.webp"
+  },
+  {
+    "id": 2,
+    "nombreArchivo": "calculadora-2.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 79540,
+    "url": "/img/calculadora-2.webp"
+  },
+  {
+    "id": 3,
+    "nombreArchivo": "calculadora-3.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 81002,
+    "url": "/img/calculadora-3.webp"
+  }
+]
