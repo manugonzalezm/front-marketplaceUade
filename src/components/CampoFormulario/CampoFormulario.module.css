@@ -1,0 +1,48 @@
+.campo {
+  display: grid;
+  min-width: 0;
+}
+
+.conBoton {
+  position: relative;
+}
+
+/* Deja lugar para el botón del ojo dentro del input */
+.conBoton input {
+  padding-inline-end: var(--alto-control);
+}
+
+.verContrasena {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: var(--alto-control);
+  height: var(--alto-control);
+  color: var(--color-texto-suave);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+  transition: color var(--transicion);
+}
+
+.verContrasena:hover {
+  color: var(--color-texto);
+}
+
+.error,
+.ayuda {
+  margin: var(--espacio-1) 0 0;
+  font-size: var(--texto-sm);
+}
+
+.error {
+  color: var(--color-error);
+  font-weight: var(--peso-medio);
+}
+
+.ayuda {
+  color: var(--color-texto-suave);
+}

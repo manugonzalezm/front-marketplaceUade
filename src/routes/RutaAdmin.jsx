@@ -1,13 +1,14 @@
-import { Outlet } from 'react-router'
+import { Navigate, Outlet } from 'react-router'
+import { useAuth } from '@/hooks/useAuth'
+import { PATHS } from './paths'
 
 /**
  * Envuelve las rutas de administración. Va siempre dentro de <RutaPrivada>,
- * así que acá ya se asume que hay sesión.
- *
- * Por ahora deja pasar a todos para poder navegar el esqueleto.
- * TODO (auth): si usuario.rol !== 'ADMIN', redirigir al inicio:
- *   return <Navigate to={PATHS.inicio} replace />
+ * así que acá ya se asume que hay sesión. Si el usuario no es ADMIN, vuelve al inicio.
  */
 export default function RutaAdmin() {
+  const { esAdmin } = useAuth()
+
+  if (!esAdmin) return <Navigate to={PATHS.inicio} replace />
   return <Outlet />
 }
