@@ -1,0 +1,23 @@
+[
+    {
+        "id": 12,
+        "nombreArchivo": "auriculares-1.webp",
+        "tipoContenido": "image/webp",
+        "tamanio": 68990,
+        "url": "/img/auriculares-1.webp"
+    },
+    {
+        "id": 13,
+        "nombreArchivo": "auriculares-2.webp",
+        "tipoContenido": "image/webp",
+        "tamanio": 71245,
+        "url": "/img/auriculares-2.webp"
+    },
+    {
+        "id": 16,
+        "nombreArchivo": "auriculares-3.webp",
+        "tipoContenido": "image/webp",
+        "tamanio": 70310,
+        "url": "/img/auriculares-3.webp"
+    }
+]

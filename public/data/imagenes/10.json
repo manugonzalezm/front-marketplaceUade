@@ -1,0 +1,16 @@
+[
+    {
+        "id": 18,
+        "nombreArchivo": "notebook-1.png",
+        "tipoContenido": "image/png",
+        "tamanio": 21554,
+        "url": "/img/notebook-1.png"
+    },
+    {
+        "id": 19,
+        "nombreArchivo": "notebook-2.png",
+        "tipoContenido": "image/png",
+        "tamanio": 24285,
+        "url": "/img/notebook-2.png"
+    }
+]
