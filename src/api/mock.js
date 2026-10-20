@@ -191,6 +191,9 @@ async function categorias(datos, { metodo, partes, body, token }) {
     return copia(categoria)
   }
   if (metodo === 'DELETE') {
+    if (datos.productos.some((producto) => producto.categoriaId === id)) {
+      throw new ApiError(409, 'La operacion entra en conflicto con los datos existentes o sus relaciones')
+    }
     datos.categorias = datos.categorias.filter((item) => item.id !== id)
     return null
   }
