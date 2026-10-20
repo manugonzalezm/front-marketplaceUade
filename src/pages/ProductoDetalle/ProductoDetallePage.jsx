@@ -61,13 +61,15 @@ export default function ProductoDetallePage() {
     }
   }, [id])
 
-  const handleAgregar = async () => {
+  const handleAgregar = async (cantidad) => {
     setAgregando(true)
     setErrorCompra(null)
     setConfirmacion(null)
     try {
-      await agregarAlCarrito({ productoId: producto.id, cantidad: 1 })
-      setConfirmacion('Agregamos el producto a tu compra.')
+      await agregarAlCarrito({ productoId: producto.id, cantidad })
+      setConfirmacion(
+        cantidad === 1 ? 'Agregamos el producto a tu compra.' : `Agregamos ${cantidad} unidades a tu compra.`,
+      )
     } catch (err) {
       setErrorCompra({
         texto: err.status === 401 ? 'Necesitás ingresar para agregar productos a tu compra.' : err.message, // ej.: "No hay stock suficiente" que manda el back
@@ -120,7 +122,7 @@ export default function ProductoDetallePage() {
           <GaleriaImagenes imagenes={imagenes} nombre={producto.nombre} />
           <InfoProducto producto={producto} categoria={categoria} />
         </div>
-        <PanelCompra producto={producto} agregando={agregando} onAgregar={handleAgregar} />
+        <PanelCompra key={producto.id} producto={producto} agregando={agregando} onAgregar={handleAgregar} />
       </div>
     </>
   )

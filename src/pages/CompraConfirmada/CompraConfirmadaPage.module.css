@@ -1,0 +1,17 @@
+/* Solo el layout: el comprobante en una columna angosta, como un ticket. */
+.contenido {
+  display: grid;
+  gap: var(--espacio-5);
+  max-width: 48rem;
+}
+
+.volver {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .volver {
+    width: auto;
+    justify-self: start;
+  }
+}

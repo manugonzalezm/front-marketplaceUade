@@ -1,0 +1,47 @@
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  padding-block: var(--espacio-4);
+}
+
+.item:first-child {
+  padding-top: 0;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.item + .item {
+  border-top: 1px solid var(--color-borde);
+}
+
+.datos {
+  min-width: 0;
+}
+
+.nombre {
+  margin: 0;
+  font-weight: var(--peso-semibold);
+  overflow-wrap: anywhere;
+}
+
+.detalle {
+  margin: 0;
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+.subtotal {
+  margin: 0;
+  font-weight: var(--peso-semibold);
+  white-space: nowrap;
+}

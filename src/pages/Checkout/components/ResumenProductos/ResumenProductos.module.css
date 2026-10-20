@@ -1,0 +1,32 @@
+.resumen {
+  padding: var(--espacio-4); /* en 320 px el contenido necesita el ancho */
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+}
+
+.cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding-bottom: var(--espacio-4);
+  margin-bottom: var(--espacio-4);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-lg);
+}
+
+.cantidad {
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+@media (min-width: 480px) {
+  .resumen {
+    padding: var(--espacio-5);
+  }
+}

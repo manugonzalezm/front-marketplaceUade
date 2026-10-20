@@ -15,3 +15,8 @@ export function formatearPrecio(valor) {
 export function formatearFecha(valor) {
   return valor ? formatoFecha.format(new Date(valor)) : ''
 }
+
+/** Número de pedido siempre con 8 dígitos: 48213765 -> "48213765", 12 -> "00000012" */
+export function formatearNumeroPedido(pedidoId) {
+  return String(pedidoId ?? '').padStart(8, '0')
+}

@@ -1,0 +1,137 @@
+.selector {
+  min-width: 0;
+  margin: 0;
+  padding: var(--espacio-4); /* en 320 px el contenido necesita el ancho */
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+}
+
+/* La leyenda se comporta como un bloque normal (sin cortar el borde del fieldset). */
+.leyenda {
+  float: left;
+  width: 100%;
+  padding: 0 0 var(--espacio-4);
+  margin-bottom: var(--espacio-4);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.leyenda + * {
+  clear: both;
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-lg);
+}
+
+.error {
+  max-width: none;
+  padding: var(--espacio-3) var(--espacio-4);
+  margin-bottom: var(--espacio-4);
+  color: var(--color-error);
+  background: var(--color-error-suave);
+  border-radius: var(--radio-sm);
+}
+
+.opciones {
+  display: grid;
+  gap: var(--espacio-3);
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-height: var(--alto-control);
+  padding: var(--espacio-3) var(--espacio-4);
+  margin: 0;
+  font-size: var(--texto-base);
+  font-weight: var(--peso-normal);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+  transition:
+    border-color var(--transicion),
+    background-color var(--transicion);
+}
+
+.opcion:hover {
+  border-color: var(--color-primario);
+}
+
+.opcion:has(.radio:checked) {
+  background: var(--color-primario-suave);
+  border-color: var(--color-primario);
+}
+
+.opcion:has(.radio:focus-visible) {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+.opcion:has(.radio[aria-invalid='true']) {
+  border-color: var(--color-error);
+}
+
+.selector:disabled .opcion {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.radio {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--color-primario);
+}
+
+/* El foco ya lo muestra la opción entera. */
+.radio:focus-visible {
+  outline: none;
+}
+
+.icono {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--color-primario);
+  background: var(--color-primario-suave);
+  border-radius: var(--radio-sm);
+}
+
+.opcion:has(.radio:checked) .icono {
+  color: var(--color-texto-invertido);
+  background: var(--color-primario);
+}
+
+.textos {
+  display: grid;
+  min-width: 0;
+}
+
+.nombre {
+  font-weight: var(--peso-semibold);
+}
+
+.descripcion {
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+@media (min-width: 1024px) {
+  .opciones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 480px) {
+  .selector {
+    padding: var(--espacio-5);
+  }
+}

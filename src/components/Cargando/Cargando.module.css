@@ -1,0 +1,43 @@
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-3);
+  padding-block: var(--espacio-8);
+  animation: aparecer 200ms ease-out;
+}
+
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid var(--color-primario-suave);
+  border-top-color: var(--color-primario);
+  border-radius: var(--radio-pill);
+  animation: girar 700ms linear infinite;
+}
+
+.texto {
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Con "reducir movimiento" el reset global frena las animaciones: el spinner gira lento en lugar de quedar fijo. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 1.5s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
