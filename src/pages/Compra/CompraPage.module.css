@@ -20,6 +20,20 @@
   padding-block: var(--espacio-7);
   color: var(--color-texto-suave);
 }
+.error,
+.exito {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-radius: var(--radio-sm);
+  overflow-wrap: anywhere;
+}
+.error {
+  color: var(--color-error);
+  background: var(--color-error-suave);
+}
+.exito {
+  color: var(--color-exito);
+  background: var(--color-exito-suave);
+}
 
 @media (min-width: 768px) {
   .contenido {

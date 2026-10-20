@@ -1,8 +1,9 @@
+import { Trash2 } from 'lucide-react'
 import { formatearPrecio } from '@/utils/formato'
 import styles from './ItemCompra.module.css'
 
-/** Ítem del carrito. Solo muestra los datos que recibe por props. */
-export default function ItemCompra({ item }) {
+/** Ítem del carrito. Solo muestra los datos y avisa cuando se quiere eliminar. */
+export default function ItemCompra({ item, eliminando = false, deshabilitado = false, onEliminar }) {
   const subtotal = item.precio * item.cantidad
 
   return (
@@ -24,6 +25,21 @@ export default function ItemCompra({ item }) {
           <dd>{formatearPrecio(subtotal)}</dd>
         </div>
       </dl>
+      <button
+        type="button"
+        className={`boton boton-peligro boton-bloque ${styles.eliminar}`}
+        onClick={onEliminar}
+        disabled={deshabilitado}
+        aria-busy={eliminando}
+        aria-label={
+          eliminando
+            ? `Eliminando ${item.nombreProducto} de mi compra`
+            : `Eliminar ${item.nombreProducto} de mi compra`
+        }
+      >
+        <Trash2 size={18} aria-hidden="true" />
+        {eliminando ? 'Eliminando…' : 'Eliminar'}
+      </button>
     </article>
   )
 }
