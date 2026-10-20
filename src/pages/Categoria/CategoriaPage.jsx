@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { getCategoria } from '@/api/categorias'
 import { getProductoImagenes, getProductos } from '@/api/productos'
+import Cargando from '@/components/Cargando/Cargando'
 import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
 import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
 import ProductoCard from '@/components/ProductoCard/ProductoCard'
@@ -27,7 +28,7 @@ export default function CategoriaPage() {
   const [resultado, setResultado] = useState(null)
 
   // El resultado guarda para qué categoría, usuario e intento se cargó: si cambia alguno (por ejemplo, se elige
-  // otra categoría en el header), la pantalla muestra "Cargando…" en lugar de los productos anteriores.
+  // otra categoría en el header), la pantalla muestra el spinner en lugar de los productos anteriores.
   const clave = `${id}|${usuarioId}|${intento}`
 
   useEffect(() => {
@@ -46,22 +47,16 @@ export default function CategoriaPage() {
     }
   }, [clave, id, usuarioId])
 
-  // Mientras carga o si falla todavía no sabemos el nombre de la categoría.
+  // Mientras carga, solo el spinner: así el título no pasa de "Categoría" al nombre real.
+  if (resultado?.clave !== clave) return <Cargando texto="Cargando productos…" />
+
+  // Si falla todavía no sabemos el nombre de la categoría.
   const encabezadoGenerico = (
     <EncabezadoPagina
       titulo="Categoría"
       migas={[{ texto: 'Inicio', to: PATHS.inicio }, { texto: 'Categoría' }]}
     />
   )
-
-  if (resultado?.clave !== clave) {
-    return (
-      <>
-        {encabezadoGenerico}
-        <p className="texto-suave">Cargando productos…</p>
-      </>
-    )
-  }
 
   if (resultado.noEncontrada) {
     return (
@@ -104,18 +99,13 @@ export default function CategoriaPage() {
   const encabezado = (
     <EncabezadoPagina
       titulo={categoria.nombre}
-      descripcion={
-        productos.length > 0
-          ? `${productos.length} ${productos.length === 1 ? 'producto disponible' : 'productos disponibles'}`
-          : undefined
-      }
       migas={[{ texto: 'Inicio', to: PATHS.inicio }, { texto: categoria.nombre }]}
     />
   )
 
   if (productos.length === 0) {
     return (
-      <>
+      <div className={styles.contenido}>
         {encabezado}
         <EstadoVacio
           icono={PackageOpen}
@@ -129,13 +119,16 @@ export default function CategoriaPage() {
             Publicar producto
           </Link>
         </EstadoVacio>
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div className={styles.contenido}>
       {encabezado}
+      <p className={styles.cantidad}>
+        {productos.length} {productos.length === 1 ? 'producto disponible' : 'productos disponibles'}
+      </p>
       <ul className={styles.grilla}>
         {productos.map((producto) => (
           <li key={producto.id}>
@@ -143,7 +136,7 @@ export default function CategoriaPage() {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   )
 }
 
