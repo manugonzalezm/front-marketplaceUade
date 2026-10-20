@@ -3,15 +3,33 @@ import { apiFetch } from './client'
 // Módulo del recurso carrito ("Mi compra" en la UI). Todos los endpoints piden
 // sesión: apiFetch agrega el token del header Authorization.
 
+/** Evento que avisa que la compra cambió, para refrescar el contador del header. */
+export const EVENTO_CARRITO_ACTUALIZADO = 'marketplace:carrito-actualizado'
+
+const avisarCarritoActualizado = () => {
+  window.dispatchEvent(new Event(EVENTO_CARRITO_ACTUALIZADO))
+}
+
 /** GET /api/carrito -> [{ id, usuarioId, productoId, nombreProducto, precio, cantidad }] */
 export const getCarrito = () => apiFetch('/carrito')
 
 /** POST /api/carrito { productoId, cantidad } -> ítem agregado */
-export const agregarAlCarrito = ({ productoId, cantidad }) =>
-  apiFetch('/carrito', { method: 'POST', body: { productoId, cantidad } })
+export const agregarAlCarrito = async ({ productoId, cantidad }) => {
+  const item = await apiFetch('/carrito', { method: 'POST', body: { productoId, cantidad } })
+  avisarCarritoActualizado()
+  return item
+}
 
 /** DELETE /api/carrito/items/{itemId} -> 204 */
-export const eliminarItemCarrito = (itemId) => apiFetch(`/carrito/items/${itemId}`, { method: 'DELETE' })
+export const eliminarItemCarrito = async (itemId) => {
+  const resultado = await apiFetch(`/carrito/items/${itemId}`, { method: 'DELETE' })
+  avisarCarritoActualizado()
+  return resultado
+}
 
 /** DELETE /api/carrito -> 204 */
-export const vaciarCarrito = () => apiFetch('/carrito', { method: 'DELETE' })
+export const vaciarCarrito = async () => {
+  const resultado = await apiFetch('/carrito', { method: 'DELETE' })
+  avisarCarritoActualizado()
+  return resultado
+}
