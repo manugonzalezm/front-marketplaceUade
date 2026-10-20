@@ -4,16 +4,16 @@ import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
 
 /**
  * Compra en curso (el "carrito"). El usuario puede retomarla desde cualquier
- * parte de la app: cambiar cantidades, quitar productos, vaciarla o confirmarla.
- * Al confirmar, navegar a la confirmación pasando la respuesta del checkout:
- *   navigate(PATHS.compraConfirmada, { state: { pedido } })
+ * parte de la app: cambiar cantidades, quitar productos o vaciarla.
+ * Para seguir, un link a "Finalizar compra" (CheckoutPage), que muestra el
+ * resumen, pide el medio de pago y hace el POST /api/carrito/checkout:
+ *   <Link to={PATHS.checkout} className="boton boton-primario">Continuar compra</Link>
  *
  * Endpoints:
  *   GET    /api/carrito
  *   POST   /api/carrito                  { productoId, cantidad }
  *   DELETE /api/carrito/items/{itemId}
  *   DELETE /api/carrito
- *   POST   /api/carrito/checkout         -> { pedidoId, fecha, total, items }
  *
  * Componentes sugeridos: ItemCompra, ResumenCompra.
  */
