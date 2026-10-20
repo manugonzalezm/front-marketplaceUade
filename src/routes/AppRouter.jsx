@@ -3,6 +3,7 @@ import MainLayout from '@/layouts/MainLayout'
 import AdminCategoriasPage from '@/pages/AdminCategorias/AdminCategoriasPage'
 import AdminUsuariosPage from '@/pages/AdminUsuarios/AdminUsuariosPage'
 import CategoriaPage from '@/pages/Categoria/CategoriaPage'
+import CheckoutPage from '@/pages/Checkout/CheckoutPage'
 import CompraPage from '@/pages/Compra/CompraPage'
 import CompraConfirmadaPage from '@/pages/CompraConfirmada/CompraConfirmadaPage'
 import HomePage from '@/pages/Home/HomePage'
@@ -31,6 +32,7 @@ export default function AppRouter() {
         {/* Requieren sesión iniciada */}
         <Route element={<RutaPrivada />}>
           <Route path={PATHS.compra} element={<CompraPage />} />
+          <Route path={PATHS.checkout} element={<CheckoutPage />} />
           <Route path={PATHS.compraConfirmada} element={<CompraConfirmadaPage />} />
           <Route path={PATHS.misProductos} element={<MisProductosPage />} />
           <Route path={PATHS.productoNuevo} element={<ProductoFormPage />} />

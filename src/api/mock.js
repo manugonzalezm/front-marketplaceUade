@@ -26,19 +26,28 @@ async function leerJson(archivo) {
   return respuesta.json()
 }
 
-/** Lee productos, categorías y usuarios una sola vez y los guarda en memoria. */
+/** Lee los JSON de prueba una sola vez y los guarda en memoria. */
 function obtenerDatos() {
   if (!datosPendientes) {
     datosPendientes = Promise.all([
       leerJson('productos.json'),
       leerJson('categorias.json'),
       leerJson('usuarios.json'),
+      leerJson('carrito.json'),
     ])
-      .then(([productos, categorias, usuarios]) => {
+      .then(([productos, categorias, usuarios, carrito]) => {
         if (!productos || !categorias || !usuarios) {
           throw new ApiError(500, 'No se pudieron cargar los datos de prueba.')
         }
-        return { productos, categorias, usuarios, imagenes: {}, contrasenas: {}, carrito: [], pedidos: [] }
+        return {
+          productos,
+          categorias,
+          usuarios,
+          imagenes: {},
+          contrasenas: {},
+          carrito: carrito ?? [],
+          pedidos: [],
+        }
       })
       .catch((error) => {
         datosPendientes = undefined // permite reintentar

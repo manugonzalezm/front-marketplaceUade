@@ -12,6 +12,7 @@ export const PATHS = {
 
   // Requieren sesión iniciada
   compra: '/compra',
+  checkout: '/compra/checkout',
   compraConfirmada: '/compra/confirmada',
   misProductos: '/mis-productos',
   productoNuevo: '/mis-productos/nuevo',

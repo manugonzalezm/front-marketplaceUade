@@ -23,6 +23,7 @@ const GRUPOS = [
     titulo: 'Con sesión',
     links: [
       { to: PATHS.compra, texto: 'Mi compra' },
+      { to: PATHS.checkout, texto: 'Checkout' },
       { to: PATHS.compraConfirmada, texto: 'Compra confirmada' },
       { to: PATHS.misProductos, texto: 'Mis productos' },
       { to: PATHS.productoNuevo, texto: 'Publicar producto' },
