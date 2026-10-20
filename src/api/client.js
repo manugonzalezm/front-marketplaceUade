@@ -4,7 +4,13 @@
 // En desarrollo Vite redirige /api a http://localhost:8080 (ver vite.config.js),
 // así que las rutas van sin host: apiFetch('/productos').
 
+import { respuestaMock } from './mock'
+
 export const TOKEN_STORAGE_KEY = 'marketplace.token'
+
+// Por defecto responde con los datos de prueba de public/data/ (modo mock).
+// Para usar el back real: crear .env.local con VITE_USAR_MOCKS=false y levantar el back.
+export const USAR_MOCKS = import.meta.env.VITE_USAR_MOCKS !== 'false'
 
 /** Error con el formato que devuelve el back: { status, mensaje, timestamp }. */
 export class ApiError extends Error {
@@ -23,6 +29,7 @@ export class ApiError extends Error {
  */
 export async function apiFetch(ruta, { method = 'GET', body } = {}) {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY)
+  if (USAR_MOCKS) return respuestaMock(ruta, { method, body, token })
   const esFormData = body instanceof FormData
   const headers = {}
 
