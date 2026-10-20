@@ -1,0 +1,111 @@
+.tarjeta {
+  position: relative; /* para que el link del nombre cubra toda la tarjeta */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  transition:
+    box-shadow var(--transicion),
+    border-color var(--transicion);
+}
+
+.tarjeta:hover {
+  border-color: var(--color-borde-fuerte);
+  box-shadow: var(--sombra-tarjeta-hover);
+}
+
+.tarjeta:has(.link:focus-visible) {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+.foto,
+.sinFoto {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--color-superficie-alt);
+}
+
+.foto {
+  object-fit: cover;
+}
+
+.sinFoto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+.cuerpo {
+  display: grid;
+  gap: var(--espacio-1);
+  padding: var(--espacio-3);
+}
+
+.nombre {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--texto-base);
+  font-weight: var(--peso-medio);
+  letter-spacing: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.link {
+  color: var(--color-texto);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--color-texto);
+}
+
+/* El link se estira sobre toda la tarjeta: se puede tocar la foto o el precio. */
+.link::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+}
+
+/* El foco lo muestra la tarjeta entera. */
+.link:focus-visible {
+  outline: none;
+}
+
+.precio {
+  margin: 0;
+  font-size: var(--texto-base);
+  font-weight: var(--peso-bold);
+  overflow-wrap: anywhere;
+}
+
+.stock {
+  margin: 0;
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+.ultimaUnidad {
+  font-weight: var(--peso-semibold);
+  color: var(--color-aviso);
+}
+
+@media (min-width: 768px) {
+  .cuerpo {
+    padding: var(--espacio-4);
+  }
+
+  .precio {
+    font-size: var(--texto-lg);
+  }
+}
