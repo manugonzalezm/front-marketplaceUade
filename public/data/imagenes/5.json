@@ -1,23 +1,23 @@
 [
-    {
-        "id": 9,
-        "nombreArchivo": "escritorio-1.jpg",
-        "tipoContenido": "image/jpeg",
-        "tamanio": 103452,
-        "url": "/img/escritorio-1.jpg"
-    },
-    {
-        "id": 10,
-        "nombreArchivo": "escritorio-2.webp",
-        "tipoContenido": "image/webp",
-        "tamanio": 98120,
-        "url": "/img/escritorio-2.webp"
-    },
-    {
-        "id": 11,
-        "nombreArchivo": "escritorio-3.webp",
-        "tipoContenido": "image/webp",
-        "tamanio": 101776,
-        "url": "/img/escritorio-3.webp"
-    }
+  {
+    "id": 9,
+    "nombreArchivo": "escritorio-1.jpg",
+    "tipoContenido": "image/jpeg",
+    "tamanio": 103452,
+    "url": "/img/escritorio-1.jpg"
+  },
+  {
+    "id": 10,
+    "nombreArchivo": "escritorio-2.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 98120,
+    "url": "/img/escritorio-2.webp"
+  },
+  {
+    "id": 11,
+    "nombreArchivo": "escritorio-3.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 101776,
+    "url": "/img/escritorio-3.webp"
+  }
 ]

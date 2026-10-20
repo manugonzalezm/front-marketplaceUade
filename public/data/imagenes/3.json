@@ -1,16 +1,16 @@
 [
-    {
-        "id": 5,
-        "nombreArchivo": "mochila-1.webp",
-        "tipoContenido": "image/webp",
-        "tamanio": 91877,
-        "url": "/img/mochila-1.webp"
-    },
-    {
-        "id": 6,
-        "nombreArchivo": "mochila-2.webp",
-        "tipoContenido": "image/webp",
-        "tamanio": 87432,
-        "url": "/img/mochila-2.webp"
-    }
+  {
+    "id": 5,
+    "nombreArchivo": "mochila-1.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 91877,
+    "url": "/img/mochila-1.webp"
+  },
+  {
+    "id": 6,
+    "nombreArchivo": "mochila-2.webp",
+    "tipoContenido": "image/webp",
+    "tamanio": 87432,
+    "url": "/img/mochila-2.webp"
+  }
 ]

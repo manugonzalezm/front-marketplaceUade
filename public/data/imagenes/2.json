@@ -1,9 +1,9 @@
 [
-    {
-        "id": 4,
-        "nombreArchivo": "apuntes-1.jpg",
-        "tipoContenido": "image/jpeg",
-        "tamanio": 65120,
-        "url": "/img/apuntes-1.jpg"
-    }
+  {
+    "id": 4,
+    "nombreArchivo": "apuntes-1.jpg",
+    "tipoContenido": "image/jpeg",
+    "tamanio": 65120,
+    "url": "/img/apuntes-1.jpg"
+  }
 ]
