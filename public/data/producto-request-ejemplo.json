@@ -1,0 +1,7 @@
+{
+  "nombre": "Lámpara de escritorio",
+  "descripcion": "Lámpara LED con brazo flexible, ideal para estudiar de noche.",
+  "precio": 9500.0,
+  "stock": 2,
+  "categoriaId": 5
+}
