@@ -33,6 +33,7 @@ Cada pantalla ya existe, tiene su ruta y su carpeta en `src/pages/`:
 | Detalle de producto           | `src/pages/ProductoDetalle/`                             |
 | Productos de una categoría    | `src/pages/Categoria/`                                   |
 | Mi compra / Compra confirmada | `src/pages/Compra/`, `src/pages/CompraConfirmada/`       |
+| Finalizar compra (checkout)   | `src/pages/Checkout/`                                    |
 | Mis productos                 | `src/pages/MisProductos/`                                |
 | Publicar / Editar producto    | `src/pages/ProductoForm/`                                |
 | Mi perfil                     | `src/pages/Perfil/`                                      |

@@ -1,0 +1,109 @@
+.detalle {
+  display: grid;
+  gap: var(--espacio-5);
+  padding: var(--espacio-4); /* en 320 px el contenido necesita el ancho */
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+}
+
+.cabecera {
+  display: grid;
+  justify-items: start;
+  gap: var(--espacio-2);
+}
+
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  padding: var(--espacio-1) var(--espacio-3);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-semibold);
+  color: var(--color-exito);
+  background: var(--color-exito-suave);
+  border-radius: var(--radio-pill);
+}
+
+.numero {
+  margin: 0;
+  font-size: var(--texto-xl);
+  overflow-wrap: anywhere;
+}
+
+.datos {
+  display: grid;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4);
+  margin: 0;
+  background: var(--color-superficie-alt);
+  border-radius: var(--radio-sm);
+}
+
+.dato {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+}
+
+.dato dt {
+  color: var(--color-texto-suave);
+}
+
+.dato dd {
+  margin: 0;
+  font-weight: var(--peso-semibold);
+  text-align: right;
+}
+
+.subtitulo {
+  margin-bottom: var(--espacio-4);
+  font-size: var(--texto-base);
+}
+
+.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding-top: var(--espacio-4);
+  margin: 0;
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-bold);
+  border-top: 1px solid var(--color-borde);
+}
+
+.total dd {
+  margin: 0;
+  white-space: nowrap;
+}
+
+@media (min-width: 480px) {
+  .detalle {
+    padding: var(--espacio-5);
+  }
+}
+
+/* Desde tablet, los datos del pedido en tres columnas: título arriba, valor abajo. */
+@media (min-width: 768px) {
+  .detalle {
+    padding: var(--espacio-6);
+  }
+
+  .datos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dato {
+    flex-direction: column;
+    gap: var(--espacio-1);
+  }
+
+  .dato dt {
+    font-size: var(--texto-sm);
+  }
+
+  .dato dd {
+    text-align: left;
+  }
+}

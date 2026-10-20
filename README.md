@@ -46,7 +46,7 @@ arriba que dice qué endpoints usar.
 | `/productos/:id`            | Detalle de producto             | `pages/ProductoDetalle/`  | Pública    |
 | `/categorias/:id`           | Productos de una categoría      | `pages/Categoria/`        | Pública    |
 | `/compra`                   | Mi compra (compra en curso)     | `pages/Compra/`           | Con sesión |
-| `/compra/checkout`          | Checkout                        | `pages/Checkout/`         | Con sesión |
+| `/checkout`                 | Finalizar compra (resumen)      | `pages/Checkout/`         | Con sesión |
 | `/compra/confirmada`        | Compra confirmada               | `pages/CompraConfirmada/` | Con sesión |
 | `/mis-productos`            | Mis productos                   | `pages/MisProductos/`     | Con sesión |
 | `/mis-productos/nuevo`      | Publicar producto               | `pages/ProductoForm/`     | Con sesión |

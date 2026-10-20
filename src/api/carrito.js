@@ -3,7 +3,7 @@ import { apiFetch } from './client'
 // Módulo del recurso carrito ("Mi compra" en la UI). Todos los endpoints piden
 // sesión: apiFetch agrega el token del header Authorization.
 
-/** Evento que avisa que la compra cambió, para refrescar el contador del header. */
+/** Evento para refrescar el contador del header después de una compra exitosa. */
 export const EVENTO_CARRITO_ACTUALIZADO = 'marketplace:carrito-actualizado'
 
 const avisarCarritoActualizado = () => {
@@ -18,6 +18,13 @@ export const agregarAlCarrito = async ({ productoId, cantidad }) => {
   const item = await apiFetch('/carrito', { method: 'POST', body: { productoId, cantidad } })
   avisarCarritoActualizado()
   return item
+}
+
+/** POST /api/carrito/checkout -> pedido con sus ítems; descuenta stock y vacía la compra. */
+export const confirmarCompra = async () => {
+  const pedido = await apiFetch('/carrito/checkout', { method: 'POST' })
+  avisarCarritoActualizado()
+  return pedido
 }
 
 /** DELETE /api/carrito/items/{itemId} -> 204 */
