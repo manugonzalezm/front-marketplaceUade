@@ -25,3 +25,17 @@ export const eliminarProducto = (id) => apiFetch(`/productos/${id}`, { method: '
 /** DELETE /api/productos/{id}/imagenes/{imagenId} -> 204 (solo el dueño del producto) */
 export const eliminarImagen = (productoId, imagenId) =>
   apiFetch(`/productos/${productoId}/imagenes/${imagenId}`, { method: 'DELETE' })
+
+/** POST /api/productos { nombre, descripcion, precio, stock, categoriaId } -> ProductoResponseDTO */
+export const crearProducto = (producto) => apiFetch('/productos', { method: 'POST', body: producto })
+
+/** PUT /api/productos/{id} (mismo body que el alta) -> ProductoResponseDTO */
+export const actualizarProducto = (id, producto) =>
+  apiFetch(`/productos/${id}`, { method: 'PUT', body: producto })
+
+/** POST /api/productos/{id}/imagenes, multipart con el campo "archivo" -> ImagenProductoResponseDTO */
+export const subirImagenProducto = (id, archivo) => {
+  const datos = new FormData()
+  datos.append('archivo', archivo)
+  return apiFetch(`/productos/${id}/imagenes`, { method: 'POST', body: datos })
+}
