@@ -20,7 +20,7 @@ import styles from './PerfilPage.module.css'
  *   DELETE /api/usuarios/{id}
  */
 export default function PerfilPage() {
-  const { usuario: sesion, logout } = useAuth()
+  const { usuario: sesion, logout, actualizarSesion } = useAuth()
   const navigate = useNavigate()
   const [usuario, setUsuario] = useState(null) // UsuarioResponseDTO actual
   const [errorCarga, setErrorCarga] = useState(null)
@@ -51,6 +51,7 @@ export default function PerfilPage() {
     try {
       const actualizado = await actualizarUsuario(sesion.id, datos)
       setUsuario(actualizado)
+      actualizarSesion(actualizado)
       setVersion((valor) => valor + 1)
       setAviso('Guardaste los cambios de tu perfil.')
     } catch (err) {

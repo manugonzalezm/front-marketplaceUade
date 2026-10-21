@@ -44,7 +44,7 @@ function leerSesionGuardada() {
 /**
  * Provee la sesión del usuario a toda la app (envuelve a AppRouter en main.jsx).
  * Se consume con el hook useAuth (src/hooks/useAuth.js):
- *   const { usuario, token, estaLogueado, esAdmin, login, logout } = useAuth()
+ *   const { usuario, token, estaLogueado, esAdmin, login, logout, actualizarSesion } = useAuth()
  *
  * @param {{ children: import('react').ReactNode }} props
  */
@@ -68,6 +68,16 @@ export function AuthProvider({ children }) {
     setSesion({ token: null, usuario: null })
   }, [])
 
+  /**
+   * Actualiza el usuario de la sesión (por ejemplo, después de editar el
+   * perfil) y lo guarda en localStorage sin cambiar el token.
+   * @param {object} usuario
+   */
+  const actualizarSesion = useCallback((usuario) => {
+    localStorage.setItem(USUARIO_STORAGE_KEY, JSON.stringify(usuario))
+    setSesion((actual) => ({ ...actual, usuario }))
+  }, [])
+
   const valor = useMemo(
     () => ({
       usuario: sesion.usuario,
@@ -76,8 +86,9 @@ export function AuthProvider({ children }) {
       esAdmin: sesion.usuario?.rol === 'ADMIN',
       login,
       logout,
+      actualizarSesion,
     }),
-    [sesion, login, logout],
+    [sesion, login, logout, actualizarSesion],
   )
 
   return <AuthContext.Provider value={valor}>{children}</AuthContext.Provider>

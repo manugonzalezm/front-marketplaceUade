@@ -11,6 +11,7 @@ import { AuthContext } from '@/context/contextoAuth'
  *   esAdmin: boolean,
  *   login: (mail: string, contrasena: string) => Promise<object>,
  *   logout: () => void,
+ *   actualizarSesion: (usuario: object) => void,
  * }}
  */
 export function useAuth() {
