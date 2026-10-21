@@ -1,7 +1,7 @@
 import { ShoppingBag, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { generatePath, Link, NavLink } from 'react-router'
-import { getCategorias } from '@/api/categorias'
+import { EVENTO_CATEGORIAS_ACTUALIZADAS, getCategorias } from '@/api/categorias'
 import Logo from '@/components/Logo/Logo'
 import { useCantidadCarrito } from '@/hooks/useCantidadCarrito'
 import { PATHS } from '@/routes/paths'
@@ -16,14 +16,21 @@ export default function Navbar() {
 
   useEffect(() => {
     let cancelado = false
-    getCategorias()
-      .then((datos) => {
-        if (!cancelado && Array.isArray(datos)) setCategorias(datos)
-      })
-      // Sin back corriendo la barra de categorías simplemente no se muestra.
-      .catch(() => {})
+
+    const cargar = () => {
+      getCategorias()
+        .then((datos) => {
+          if (!cancelado && Array.isArray(datos)) setCategorias(datos)
+        })
+        // Sin back corriendo la barra de categorías simplemente no se muestra.
+        .catch(() => {})
+    }
+
+    cargar()
+    window.addEventListener(EVENTO_CATEGORIAS_ACTUALIZADAS, cargar)
     return () => {
       cancelado = true
+      window.removeEventListener(EVENTO_CATEGORIAS_ACTUALIZADAS, cargar)
     }
   }, [])
 
