@@ -1,0 +1,77 @@
+.contenedor {
+  /* relative: los textos .solo-lectores (position: absolute) quedan dentro de la caja y no ensanchan la página */
+  position: relative;
+  overflow-x: auto;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+}
+
+.contenedor:focus-visible {
+  outline: 3px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+.tabla {
+  width: 100%;
+  min-width: 48rem;
+  border-collapse: collapse;
+}
+
+.tabla th,
+.tabla td {
+  padding: var(--espacio-3) var(--espacio-4);
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tabla th {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-semibold);
+  background: var(--color-superficie-alt);
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.usuario {
+  font-weight: var(--peso-semibold);
+}
+
+.rol,
+.rolAdmin {
+  display: inline-block;
+  padding: var(--espacio-1) var(--espacio-2);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-semibold);
+  border-radius: var(--radio-pill);
+}
+
+.rol {
+  color: var(--color-texto);
+  background: var(--color-superficie-alt);
+}
+
+.rolAdmin {
+  color: var(--color-texto-invertido);
+  background: var(--color-primario);
+}
+
+.acciones {
+  text-align: right;
+}
+
+.vos {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.confirmacion {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--espacio-2);
+}

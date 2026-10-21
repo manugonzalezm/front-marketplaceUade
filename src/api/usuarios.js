@@ -19,3 +19,19 @@ export const login = ({ mail, contrasena }) =>
  * -> UsuarioResponseDTO (sin token: después hay que loguearse)
  */
 export const registrarUsuario = (usuario) => apiFetch('/usuarios/registro', { method: 'POST', body: usuario })
+
+/** GET /api/usuarios/{id} -> UsuarioResponseDTO (el propio usuario o un ADMIN) */
+export const getUsuario = (id) => apiFetch(`/usuarios/${id}`)
+
+/** GET /api/usuarios -> [UsuarioResponseDTO] (solo ADMIN) */
+export const getUsuarios = () => apiFetch('/usuarios')
+
+/**
+ * PUT /api/usuarios/{id} (mismo body que el registro) -> UsuarioResponseDTO
+ * La contraseña es opcional: si no viene, el back conserva la actual.
+ */
+export const actualizarUsuario = (id, usuario) =>
+  apiFetch(`/usuarios/${id}`, { method: 'PUT', body: usuario })
+
+/** DELETE /api/usuarios/{id} -> 204 (el propio usuario o un ADMIN) */
+export const eliminarUsuario = (id) => apiFetch(`/usuarios/${id}`, { method: 'DELETE' })

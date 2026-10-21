@@ -1,0 +1,30 @@
+.pagina {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* la tabla no estira la página: scrollea dentro de su caja */
+  gap: var(--espacio-5);
+}
+
+.subtitulo {
+  margin: 0 0 var(--espacio-3);
+  font-size: var(--texto-lg);
+}
+
+.error,
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: var(--espacio-3) var(--espacio-4);
+  border-radius: var(--radio-sm);
+}
+
+.error {
+  color: var(--color-error);
+  background: var(--color-error-suave);
+}
+
+.aviso {
+  color: var(--color-exito);
+  background: var(--color-exito-suave);
+}

@@ -1,0 +1,21 @@
+.formulario {
+  display: grid;
+  gap: var(--espacio-3);
+  padding: var(--espacio-5) var(--espacio-4);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+}
+
+@media (min-width: 768px) {
+  .formulario {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    padding: var(--espacio-5) var(--espacio-6);
+  }
+
+  /* El botón se alinea con el input, no con el label de arriba */
+  .formulario > button {
+    margin-top: calc(var(--texto-base) * 1.6 + var(--espacio-1));
+  }
+}
