@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "usuarioId": 2,
+    "productoId": 2,
+    "nombreProducto": "Apuntes de Programación 2",
+    "precio": 5000.0,
+    "cantidad": 2
+  },
+  {
+    "id": 2,
+    "usuarioId": 2,
+    "productoId": 6,
+    "nombreProducto": "Auriculares inalámbricos",
+    "precio": 30000.0,
+    "cantidad": 1
+  },
+  {
+    "id": 3,
+    "usuarioId": 3,
+    "productoId": 1,
+    "nombreProducto": "Calculadora científica Casio fx-350",
+    "precio": 15000.0,
+    "cantidad": 1
+  },
+  {
+    "id": 4,
+    "usuarioId": 3,
+    "productoId": 5,
+    "nombreProducto": "Escritorio plegable",
+    "precio": 45000.0,
+    "cantidad": 1
+  }
+]

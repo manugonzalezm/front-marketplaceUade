@@ -70,6 +70,29 @@
   color: var(--color-primario);
 }
 
+.iconoCompra {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge {
+  position: absolute;
+  top: calc(var(--espacio-2) * -1);
+  right: calc(var(--espacio-2) * -1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--texto-base);
+  height: var(--texto-base);
+  padding-inline: var(--espacio-1);
+  color: var(--color-texto-invertido);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-bold);
+  line-height: var(--interlineado-titulos);
+  background: var(--color-primario);
+  border-radius: var(--radio-pill);
+}
+
 .compraTexto {
   position: absolute;
   width: 1px;

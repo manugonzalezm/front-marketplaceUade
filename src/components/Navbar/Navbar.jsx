@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { generatePath, Link, NavLink } from 'react-router'
 import { getCategorias } from '@/api/categorias'
 import Logo from '@/components/Logo/Logo'
+import { useCantidadCarrito } from '@/hooks/useCantidadCarrito'
 import { PATHS } from '@/routes/paths'
 import Buscador from './Buscador/Buscador'
 import MenuCuenta from './MenuCuenta/MenuCuenta'
@@ -11,6 +12,7 @@ import styles from './Navbar.module.css'
 
 export default function Navbar() {
   const [categorias, setCategorias] = useState([])
+  const cantidadCarrito = useCantidadCarrito()
 
   useEffect(() => {
     let cancelado = false
@@ -49,8 +51,20 @@ export default function Navbar() {
             <MenuCuenta />
           </div>
           <NavLink to={PATHS.compra} end className={styles.compra}>
-            <ShoppingBag size={22} aria-hidden="true" />
+            <span className={styles.iconoCompra}>
+              <ShoppingBag size={22} aria-hidden="true" />
+              {cantidadCarrito > 0 && (
+                <span className={styles.badge} aria-hidden="true">
+                  {cantidadCarrito > 99 ? '99+' : cantidadCarrito}
+                </span>
+              )}
+            </span>
             <span className={styles.compraTexto}>Mi compra</span>
+            {cantidadCarrito > 0 && (
+              <span className="solo-lectores">
+                {`, ${cantidadCarrito} ${cantidadCarrito === 1 ? 'producto' : 'productos'}`}
+              </span>
+            )}
           </NavLink>
         </div>
       </div>

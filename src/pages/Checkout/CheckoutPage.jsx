@@ -1,8 +1,7 @@
 import { CircleAlert, ShoppingBag } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-// Simulación con JSON propios mientras no le podemos pegar a la API. Para usar el back: '@/api/carrito'.
-import { confirmarCompra, getCarrito } from '@/api/checkoutSimulado'
+import { confirmarCompra, getCarrito } from '@/api/carrito'
 import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
 import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
 import { PATHS } from '@/routes/paths'
@@ -17,7 +16,7 @@ import styles from './CheckoutPage.module.css'
  * (productos, cantidades, subtotales y total), pide el medio de pago y confirma. Para cambiar algo, el usuario
  * vuelve a "Mi compra".
  *
- * Endpoints (simulados en src/api/checkoutSimulado.js con public/data/checkout/):
+ * Endpoints:
  *   GET  /api/carrito            -> [{ id, usuarioId, productoId, nombreProducto, precio, cantidad }]
  *   POST /api/carrito/checkout   -> { pedidoId, usuarioId, fecha, total, items }
  *
