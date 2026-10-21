@@ -18,8 +18,10 @@ npm install
 npm run dev
 ```
 
-Se abre en [http://localhost:5173](http://localhost:5173). En desarrollo, Vite redirige todo lo que empieza con
-`/api` al back en el puerto 8080, así que no hace falta configurar CORS ni URLs.
+Se abre en [http://localhost:5173](http://localhost:5173). Por defecto la app usa los JSON de `public/data/`, así
+que funciona sin back. Para usar el back real, creá `.env.local` con `VITE_USAR_MOCKS=false` y levantalo en el
+puerto 8080: en desarrollo, Vite redirige todo lo que empieza con `/api` al back, así que no hace falta configurar
+CORS ni URLs.
 
 ## Scripts
 
@@ -34,9 +36,8 @@ Se abre en [http://localhost:5173](http://localhost:5173). En desarrollo, Vite r
 
 ## Pantallas
 
-Las rutas están en `src/routes/AppRouter.jsx` y sus URLs en `src/routes/paths.js`. Cada pantalla tiene su carpeta
-en `src/pages/`; por ahora muestran su encabezado y un aviso de "Pantalla en desarrollo", con un comentario
-arriba que dice qué endpoints usar.
+Las rutas están en `src/routes/AppRouter.jsx` y sus URLs en `src/routes/paths.js`. Cada pantalla está
+implementada en su carpeta de `src/pages/`, con los endpoints o mocks correspondientes.
 
 | Ruta                        | Pantalla                        | Carpeta                   | Acceso     |
 | --------------------------- | ------------------------------- | ------------------------- | ---------- |
@@ -56,8 +57,8 @@ arriba que dice qué endpoints usar.
 | `/admin/usuarios`           | Administrar usuarios            | `pages/AdminUsuarios/`    | Admin      |
 | cualquier otra              | Página no encontrada            | `pages/NotFound/`         | Pública    |
 
-Las rutas "Con sesión" y "Admin" ya están envueltas en `RutaPrivada` y `RutaAdmin`, que por ahora dejan pasar a
-todos; cuando esté el login van a redirigir.
+Las rutas "Con sesión" y "Admin" están envueltas en `RutaPrivada` y `RutaAdmin`: sin sesión redirigen al login y,
+sin rol ADMIN, vuelven al inicio.
 
 **Navegación.** El header tiene el buscador, "Publicar", el menú "Mi cuenta" (ingreso, perfil, mis productos y
 administración), "Mi compra" y la barra de categorías (se carga desde el back). En celular todo eso va en el
@@ -70,6 +71,8 @@ menú lateral. Las pantallas que se abren desde otra (detalle, edición, compra 
 src/
 ├── api/            client.js (el único lugar que llama a fetch) + un módulo por recurso
 ├── components/     compartidos: Navbar, Footer, EncabezadoPagina, EstadoVacio, Logo, MapaPantallas
+├── context/        AuthContext
+├── hooks/          useAuth, useCantidadCarrito
 ├── layouts/        MainLayout: header + contenido + footer
 ├── pages/          una carpeta por vista; adentro, components/ con los componentes de esa vista
 ├── routes/         AppRouter, paths y las guardas RutaPrivada / RutaAdmin
