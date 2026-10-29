@@ -1,6 +1,7 @@
-import { ShoppingBag, Plus } from 'lucide-react'
+import { Heart, ShoppingBag, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { generatePath, Link, NavLink } from 'react-router'
+import { useSelector } from 'react-redux'
 import { EVENTO_CATEGORIAS_ACTUALIZADAS, getCategorias } from '@/api/categorias'
 import Logo from '@/components/Logo/Logo'
 import { useCantidadCarrito } from '@/hooks/useCantidadCarrito'
@@ -13,6 +14,8 @@ import styles from './Navbar.module.css'
 export default function Navbar() {
   const [categorias, setCategorias] = useState([])
   const cantidadCarrito = useCantidadCarrito()
+  // REDUX: el Navbar se suscribe a store.favorite.items y solo LEE la cantidad
+  const cantidadFavoritos = useSelector((store) => store.favorite.items.length)
 
   useEffect(() => {
     let cancelado = false
@@ -54,6 +57,17 @@ export default function Navbar() {
             <Plus size={18} aria-hidden="true" />
             Publicar
           </Link>
+          <span className={styles.compra} title="Favoritos">
+            <span className={styles.iconoCompra}>
+              <Heart size={22} aria-hidden="true" />
+              {cantidadFavoritos > 0 && (
+                <span className={styles.badge} aria-hidden="true">
+                  {cantidadFavoritos}
+                </span>
+              )}
+            </span>
+            <span className="solo-lectores">{`${cantidadFavoritos} favoritos`}</span>
+          </span>
           <div className={styles.cuenta}>
             <MenuCuenta />
           </div>
