@@ -109,3 +109,30 @@
     font-size: var(--texto-lg);
   }
 }
+
+
+/* Botón de favoritos: arriba a la derecha de la foto.
+   z-index 1 para quedar por encima del link que cubre toda la tarjeta. */
+.favorito {
+  position: absolute;
+  top: var(--espacio-2);
+  right: var(--espacio-2);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  background: var(--color-superficie);
+  border: none;
+  border-radius: 50%;
+  box-shadow: var(--sombra-tarjeta-hover);
+}
+
+.favorito:hover,
+.favoritoActivo {
+  color: var(--color-error);
+}

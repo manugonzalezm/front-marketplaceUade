@@ -1,7 +1,9 @@
-import { ImageOff } from 'lucide-react'
+import { Heart, ImageOff } from 'lucide-react'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { generatePath, Link } from 'react-router'
 import { PATHS } from '@/routes/paths'
+import { addFavorite, removeFavorite } from '@/store/slices/favoriteSlice'
 import { formatearPrecio } from '@/utils/formato'
 import styles from './ProductoCard.module.css'
 
@@ -26,8 +28,34 @@ export default function ProductoCard({ producto, imagen, nivelTitulo = 2 }) {
   const Titulo = `h${nivelTitulo}`
   const esUltimaUnidad = producto.stock === 1
 
+  // REDUX - FUNCIONES: dispatch para pedirle cambios al favoriteSlice
+  const dispatch = useDispatch()
+
+  // REDUX - DATOS: la tarjeta se suscribe a store.favorite.items
+  // esFavorito es true si este producto ya está en la lista de favoritos
+  const esFavorito = useSelector((store) => store.favorite.items.some((item) => item.id === producto.id))
+
+  // al tocar el ❤️: si ya es favorito lo quita, si no lo agrega
+  const alternarFavorito = () => {
+    if (esFavorito) {
+      dispatch(removeFavorite(producto.id))
+    } else {
+      dispatch(addFavorite(producto))
+    }
+  }
+
   return (
     <article className={styles.tarjeta}>
+      <button
+        type="button"
+        className={esFavorito ? `${styles.favorito} ${styles.favoritoActivo}` : styles.favorito}
+        onClick={alternarFavorito}
+        aria-label={esFavorito ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+        aria-pressed={esFavorito}
+      >
+        <Heart size={20} fill={esFavorito ? 'currentColor' : 'none'} aria-hidden="true" />
+      </button>
+
       {imagen?.url && !falloImagen ? (
         <img
           className={styles.foto}
