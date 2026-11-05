@@ -17,12 +17,12 @@ const GRUPOS = [
       { to: PATHS.registro, texto: 'Crear cuenta' },
       { to: generatePath(PATHS.productoDetalle, { id: 1 }), texto: 'Detalle de producto' },
       { to: generatePath(PATHS.categoria, { id: 1 }), texto: 'Categoría' },
-      { to: PATHS.favoritos, texto: 'Favoritos' },
     ],
   },
   {
     titulo: 'Con sesión',
     links: [
+      { to: PATHS.favoritos, texto: 'Favoritos' },
       { to: PATHS.compra, texto: 'Mi compra' },
       { to: PATHS.checkout, texto: 'Finalizar compra' },
       { to: PATHS.compraConfirmada, texto: 'Compra confirmada' },
