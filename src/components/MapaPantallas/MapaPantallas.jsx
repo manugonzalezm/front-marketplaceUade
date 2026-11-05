@@ -17,6 +17,7 @@ const GRUPOS = [
       { to: PATHS.registro, texto: 'Crear cuenta' },
       { to: generatePath(PATHS.productoDetalle, { id: 1 }), texto: 'Detalle de producto' },
       { to: generatePath(PATHS.categoria, { id: 1 }), texto: 'Categoría' },
+      { to: PATHS.favoritos, texto: 'Favoritos' },
     ],
   },
   {

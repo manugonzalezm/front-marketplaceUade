@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 // Slice de favoritos: guarda los productos que el usuario marcó con ❤️
 const favoriteSlice = createSlice({
@@ -15,29 +15,29 @@ const favoriteSlice = createSlice({
     // se ejecuta con dispatch(addFavorite(producto))
     // action.payload = el producto que mandó el componente
     addFavorite: (state, action) => {
-      const producto = action.payload;
+      const producto = action.payload
       // buscamos si ya está, para no agregarlo dos veces
-      const yaExiste = state.items.find((item) => item.id === producto.id);
+      const yaExiste = state.items.find((item) => item.id === producto.id)
       if (!yaExiste) {
-        state.items.push(producto);
+        state.items.push(producto)
       }
     },
 
     // se ejecuta con dispatch(removeFavorite(id))
     // action.payload = el id del producto a quitar
     removeFavorite: (state, action) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      state.items = state.items.filter((item) => item.id !== action.payload)
     },
 
     // se ejecuta con dispatch(clearFavorites())
     clearFavorites: (state) => {
-      state.items = [];
+      state.items = []
     },
   },
-});
+})
 
 // exportamos las FUNCIONES (actions) para que los componentes las usen con dispatch
-export const { addFavorite, removeFavorite, clearFavorites } = favoriteSlice.actions;
+export const { addFavorite, removeFavorite, clearFavorites } = favoriteSlice.actions
 
 // exportamos el REDUCER para registrarlo en el store
-export default favoriteSlice.reducer;
+export default favoriteSlice.reducer

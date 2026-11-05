@@ -40,7 +40,8 @@ export default function ProductoCard({ producto, imagen, nivelTitulo = 2 }) {
     if (esFavorito) {
       dispatch(removeFavorite(producto.id))
     } else {
-      dispatch(addFavorite(producto))
+      // guardamos también la foto para mostrarla en la pantalla de favoritos
+      dispatch(addFavorite({ ...producto, imagenUrl: imagen?.url ?? null }))
     }
   }
 

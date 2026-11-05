@@ -6,6 +6,7 @@ import CategoriaPage from '@/pages/Categoria/CategoriaPage'
 import CheckoutPage from '@/pages/Checkout/CheckoutPage'
 import CompraPage from '@/pages/Compra/CompraPage'
 import CompraConfirmadaPage from '@/pages/CompraConfirmada/CompraConfirmadaPage'
+import FavoritosPage from '@/pages/Favoritos/FavoritosPage'
 import HomePage from '@/pages/Home/HomePage'
 import LoginPage from '@/pages/Login/LoginPage'
 import MisProductosPage from '@/pages/MisProductos/MisProductosPage'
@@ -28,6 +29,7 @@ export default function AppRouter() {
         <Route path={PATHS.registro} element={<RegistroPage />} />
         <Route path={PATHS.productoDetalle} element={<ProductoDetallePage />} />
         <Route path={PATHS.categoria} element={<CategoriaPage />} />
+        <Route path={PATHS.favoritos} element={<FavoritosPage />} />
 
         {/* Requieren sesión iniciada */}
         <Route element={<RutaPrivada />}>
