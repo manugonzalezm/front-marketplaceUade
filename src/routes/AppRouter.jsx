@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import { useSincronizarFavoritos } from '@/hooks/useSincronizarFavoritos'
 import MainLayout from '@/layouts/MainLayout'
 import AdminCategoriasPage from '@/pages/AdminCategorias/AdminCategoriasPage'
 import AdminUsuariosPage from '@/pages/AdminUsuarios/AdminUsuariosPage'
@@ -20,6 +21,9 @@ import RutaAdmin from './RutaAdmin'
 import RutaPrivada from './RutaPrivada'
 
 export default function AppRouter() {
+  // Carga los favoritos del usuario al iniciar sesión y los limpia al salir.
+  useSincronizarFavoritos()
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
@@ -29,10 +33,10 @@ export default function AppRouter() {
         <Route path={PATHS.registro} element={<RegistroPage />} />
         <Route path={PATHS.productoDetalle} element={<ProductoDetallePage />} />
         <Route path={PATHS.categoria} element={<CategoriaPage />} />
-        <Route path={PATHS.favoritos} element={<FavoritosPage />} />
 
         {/* Requieren sesión iniciada */}
         <Route element={<RutaPrivada />}>
+          <Route path={PATHS.favoritos} element={<FavoritosPage />} />
           <Route path={PATHS.compra} element={<CompraPage />} />
           <Route path={PATHS.checkout} element={<CheckoutPage />} />
           <Route path={PATHS.compraConfirmada} element={<CompraConfirmadaPage />} />
