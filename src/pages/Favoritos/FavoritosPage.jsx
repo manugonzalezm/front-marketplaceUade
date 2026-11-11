@@ -7,6 +7,7 @@ import Cargando from '@/components/Cargando/Cargando'
 import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
 import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
 import ProductoCard from '@/components/ProductoCard/ProductoCard'
+import { useProductosActualizados } from '@/hooks/useProductosActualizados'
 import { PATHS } from '@/routes/paths'
 import styles from './FavoritosPage.module.css'
 
@@ -19,6 +20,9 @@ export default function FavoritosPage() {
   const favoritos = useSelector((store) => store.favorite.items)
   const cargando = useSelector((store) => store.favorite.cargando)
   const error = useSelector((store) => store.favorite.error)
+  // El store guarda una foto del producto al marcarlo; esto la refresca para que
+  // el stock (y el resto de los datos) no quede viejo después de una compra.
+  const actualizados = useProductosActualizados(favoritos)
   // En modo real el back no devuelve la foto: la buscamos solo para los que no la tienen.
   const [imagenes, setImagenes] = useState({})
 
@@ -76,11 +80,15 @@ export default function FavoritosPage() {
         </EstadoVacio>
       ) : (
         <ul className={styles.grilla}>
-          {favoritos.map((producto) => (
-            <li key={producto.id}>
-              <ProductoCard producto={producto} imagen={imagenDe(producto)} />
-            </li>
-          ))}
+          {favoritos.map((producto) => {
+            // Datos frescos del producto, conservando la foto guardada en el favorito.
+            const actual = { ...producto, ...actualizados[producto.id] }
+            return (
+              <li key={producto.id}>
+                <ProductoCard producto={actual} imagen={imagenDe(actual)} />
+              </li>
+            )
+          })}
         </ul>
       )}
     </>
