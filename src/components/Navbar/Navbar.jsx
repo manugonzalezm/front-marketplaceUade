@@ -57,17 +57,22 @@ export default function Navbar() {
             <Plus size={18} aria-hidden="true" />
             Publicar
           </Link>
-          <span className={styles.compra} title="Favoritos">
+          <NavLink to={PATHS.favoritos} className={styles.compra}>
             <span className={styles.iconoCompra}>
               <Heart size={22} aria-hidden="true" />
               {cantidadFavoritos > 0 && (
                 <span className={styles.badge} aria-hidden="true">
-                  {cantidadFavoritos}
+                  {cantidadFavoritos > 99 ? '99+' : cantidadFavoritos}
                 </span>
               )}
             </span>
-            <span className="solo-lectores">{`${cantidadFavoritos} favoritos`}</span>
-          </span>
+            <span className={styles.compraTexto}>Favoritos</span>
+            {cantidadFavoritos > 0 && (
+              <span className="solo-lectores">
+                {`, ${cantidadFavoritos} ${cantidadFavoritos === 1 ? 'guardado' : 'guardados'}`}
+              </span>
+            )}
+          </NavLink>
           <div className={styles.cuenta}>
             <MenuCuenta />
           </div>

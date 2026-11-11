@@ -1,7 +1,9 @@
 import { Heart, ImageOff } from 'lucide-react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { generatePath, Link } from 'react-router'
+import { generatePath, Link, useLocation, useNavigate } from 'react-router'
+import { agregarFavorito, quitarFavorito } from '@/api/favoritos'
+import { useAuth } from '@/hooks/useAuth'
 import { PATHS } from '@/routes/paths'
 import { addFavorite, removeFavorite } from '@/store/slices/favoriteSlice'
 import { formatearPrecio } from '@/utils/formato'
@@ -25,22 +27,47 @@ import styles from './ProductoCard.module.css'
  */
 export default function ProductoCard({ producto, imagen, nivelTitulo = 2 }) {
   const [falloImagen, setFalloImagen] = useState(false)
+  const [errorFavorito, setErrorFavorito] = useState(null)
+  const [guardando, setGuardando] = useState(false)
   const Titulo = `h${nivelTitulo}`
   const esUltimaUnidad = producto.stock === 1
 
   // REDUX - FUNCIONES: dispatch para pedirle cambios al favoriteSlice
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { usuario, estaLogueado } = useAuth()
 
   // REDUX - DATOS: la tarjeta se suscribe a store.favorite.items
   // esFavorito es true si este producto ya está en la lista de favoritos
   const esFavorito = useSelector((store) => store.favorite.items.some((item) => item.id === producto.id))
 
-  // al tocar el ❤️: si ya es favorito lo quita, si no lo agrega
-  const alternarFavorito = () => {
-    if (esFavorito) {
-      dispatch(removeFavorite(producto.id))
-    } else {
-      dispatch(addFavorite(producto))
+  // al tocar el ❤️: sin sesión va al login; si ya es favorito lo quita y si no lo agrega
+  const alternarFavorito = async () => {
+    if (!estaLogueado) {
+      navigate(PATHS.login, { state: { desde: location } })
+      return
+    }
+
+    // guardamos también la foto para mostrarla en la pantalla de favoritos
+    const favorito = { ...producto, imagenUrl: imagen?.url ?? null }
+    const eraFavorito = esFavorito
+    setErrorFavorito(null)
+    setGuardando(true)
+
+    // Cambiamos el corazón al instante; si el back falla, lo revertimos.
+    if (eraFavorito) dispatch(removeFavorite(producto.id))
+    else dispatch(addFavorite(favorito))
+
+    try {
+      if (eraFavorito) await quitarFavorito(usuario.id, producto.id)
+      else await agregarFavorito(usuario.id, favorito)
+    } catch (error) {
+      if (eraFavorito) dispatch(addFavorite(favorito))
+      else dispatch(removeFavorite(producto.id))
+      setErrorFavorito(error.message)
+    } finally {
+      setGuardando(false)
     }
   }
 
@@ -50,6 +77,7 @@ export default function ProductoCard({ producto, imagen, nivelTitulo = 2 }) {
         type="button"
         className={esFavorito ? `${styles.favorito} ${styles.favoritoActivo}` : styles.favorito}
         onClick={alternarFavorito}
+        disabled={guardando}
         aria-label={esFavorito ? 'Quitar de favoritos' : 'Agregar a favoritos'}
         aria-pressed={esFavorito}
       >
@@ -82,6 +110,12 @@ export default function ProductoCard({ producto, imagen, nivelTitulo = 2 }) {
           {esUltimaUnidad ? 'Última unidad' : `${producto.stock} disponibles`}
         </p>
       </div>
+
+      {errorFavorito && (
+        <p className={styles.errorFavorito} role="alert">
+          {errorFavorito}
+        </p>
+      )}
     </article>
   )
 }

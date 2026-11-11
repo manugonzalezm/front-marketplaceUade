@@ -22,6 +22,7 @@ const GRUPOS = [
   {
     titulo: 'Con sesión',
     links: [
+      { to: PATHS.favoritos, texto: 'Favoritos' },
       { to: PATHS.compra, texto: 'Mi compra' },
       { to: PATHS.checkout, texto: 'Finalizar compra' },
       { to: PATHS.compraConfirmada, texto: 'Compra confirmada' },

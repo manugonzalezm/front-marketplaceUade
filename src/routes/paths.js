@@ -9,6 +9,7 @@ export const PATHS = {
   registro: '/registro',
   productoDetalle: '/productos/:id',
   categoria: '/categorias/:id',
+  favoritos: '/favoritos',
 
   // Requieren sesión iniciada
   compra: '/compra',

@@ -110,7 +110,6 @@
   }
 }
 
-
 /* Botón de favoritos: arriba a la derecha de la foto.
    z-index 1 para quedar por encima del link que cubre toda la tarjeta. */
 .favorito {
@@ -134,5 +133,17 @@
 
 .favorito:hover,
 .favoritoActivo {
+  color: var(--color-error);
+}
+
+.favorito:disabled {
+  cursor: progress;
+}
+
+/* Error al guardar o quitar un favorito, para no fallar en silencio. */
+.errorFavorito {
+  margin: 0;
+  padding: 0 var(--espacio-3) var(--espacio-3);
+  font-size: var(--texto-xs);
   color: var(--color-error);
 }

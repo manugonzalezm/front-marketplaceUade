@@ -46,6 +46,7 @@ implementada en su carpeta de `src/pages/`, con los endpoints o mocks correspond
 | `/registro`                 | Crear cuenta                    | `pages/Registro/`         | Pública    |
 | `/productos/:id`            | Detalle de producto             | `pages/ProductoDetalle/`  | Pública    |
 | `/categorias/:id`           | Productos de una categoría      | `pages/Categoria/`        | Pública    |
+| `/favoritos`                | Favoritos                       | `pages/Favoritos/`        | Con sesión |
 | `/compra`                   | Mi compra (compra en curso)     | `pages/Compra/`           | Con sesión |
 | `/checkout`                 | Finalizar compra (resumen)      | `pages/Checkout/`         | Con sesión |
 | `/compra/confirmada`        | Compra confirmada               | `pages/CompraConfirmada/` | Con sesión |
