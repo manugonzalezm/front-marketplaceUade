@@ -1,12 +1,13 @@
 import { PackageX } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router'
-import { agregarAlCarrito } from '@/api/carrito'
 import { getCategoria } from '@/api/categorias'
 import { getProducto, getProductoImagenes } from '@/api/productos'
 import EncabezadoPagina from '@/components/EncabezadoPagina/EncabezadoPagina'
 import EstadoVacio from '@/components/EstadoVacio/EstadoVacio'
 import { PATHS } from '@/routes/paths'
+import { addToCart } from '@/store/slices/cartSlice'
 import GaleriaImagenes from './components/GaleriaImagenes/GaleriaImagenes'
 import InfoProducto from './components/InfoProducto/InfoProducto'
 import PanelCompra from './components/PanelCompra/PanelCompra'
@@ -21,10 +22,11 @@ import styles from './ProductoDetallePage.module.css'
  *   GET  /api/productos/{id}
  *   GET  /api/productos/{id}/imagenes
  *   GET  /api/categorias/{categoriaId}
- *   POST /api/carrito   { productoId, cantidad }
+ *   POST /api/carrito   { productoId, cantidad }  (thunk addToCart del cartSlice)
  */
 export default function ProductoDetallePage() {
   const { id } = useParams()
+  const dispatch = useDispatch()
   const [producto, setProducto] = useState(null)
   const [imagenes, setImagenes] = useState([])
   const [categoria, setCategoria] = useState(null)
@@ -66,13 +68,16 @@ export default function ProductoDetallePage() {
     setErrorCompra(null)
     setConfirmacion(null)
     try {
-      await agregarAlCarrito({ productoId: producto.id, cantidad })
+      // REDUX: el thunk hace el POST /api/carrito y actualiza el cartSlice (pending/fulfilled/rejected).
+      // unwrap() devuelve el ítem si salió bien o lanza lo que mandó rejectWithValue si falló.
+      await dispatch(addToCart({ productoId: producto.id, cantidad })).unwrap()
       setConfirmacion(
         cantidad === 1 ? 'Agregamos el producto a tu compra.' : `Agregamos ${cantidad} unidades a tu compra.`,
       )
     } catch (err) {
+      // err = { mensaje, status } (lo que mandó rejectWithValue)
       setErrorCompra({
-        texto: err.status === 401 ? 'Necesitás ingresar para agregar productos a tu compra.' : err.message, // ej.: "No hay stock suficiente" que manda el back
+        texto: err.status === 401 ? 'Necesitás ingresar para agregar productos a tu compra.' : err.mensaje, // ej.: "No hay stock suficiente" que manda el back
         necesitaIngresar: err.status === 401,
       })
     } finally {
