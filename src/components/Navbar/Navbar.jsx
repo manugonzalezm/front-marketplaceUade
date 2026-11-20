@@ -4,7 +4,6 @@ import { generatePath, Link, NavLink } from 'react-router'
 import { useSelector } from 'react-redux'
 import { EVENTO_CATEGORIAS_ACTUALIZADAS, getCategorias } from '@/api/categorias'
 import Logo from '@/components/Logo/Logo'
-import { useCantidadCarrito } from '@/hooks/useCantidadCarrito'
 import { PATHS } from '@/routes/paths'
 import Buscador from './Buscador/Buscador'
 import MenuCuenta from './MenuCuenta/MenuCuenta'
@@ -13,7 +12,10 @@ import styles from './Navbar.module.css'
 
 export default function Navbar() {
   const [categorias, setCategorias] = useState([])
-  const cantidadCarrito = useCantidadCarrito()
+  // REDUX: el Navbar se suscribe a store.cart.items y suma las unidades de la compra
+  const cantidadCarrito = useSelector((store) =>
+    store.cart.items.reduce((suma, item) => suma + item.cantidad, 0),
+  )
   // REDUX: el Navbar se suscribe a store.favorite.items y solo LEE la cantidad
   const cantidadFavoritos = useSelector((store) => store.favorite.items.length)
 
