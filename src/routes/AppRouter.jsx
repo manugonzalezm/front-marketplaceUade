@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import { useAplicarTema } from '@/hooks/useAplicarTema'
 import { useSincronizarCarrito } from '@/hooks/useSincronizarCarrito'
 import { useSincronizarFavoritos } from '@/hooks/useSincronizarFavoritos'
 import MainLayout from '@/layouts/MainLayout'
@@ -25,6 +26,8 @@ export default function AppRouter() {
   // Cargan los favoritos y el carrito del usuario al iniciar sesión y los limpian al salir.
   useSincronizarFavoritos()
   useSincronizarCarrito()
+  // Pone el tema guardado (claro u oscuro) en <html>.
+  useAplicarTema()
 
   return (
     <Routes>

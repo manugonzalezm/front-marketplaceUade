@@ -66,6 +66,12 @@
   border-bottom: 1px solid var(--color-borde);
 }
 
+.accionesEncabezado {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-1);
+}
+
 .ingreso {
   display: grid;
   grid-template-columns: 1fr 1fr;

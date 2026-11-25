@@ -42,6 +42,7 @@
 }
 
 .publicar,
+.tema,
 .cuenta {
   display: none;
 }
@@ -161,6 +162,7 @@
     display: inline-flex;
   }
 
+  .tema,
   .cuenta {
     display: block;
   }

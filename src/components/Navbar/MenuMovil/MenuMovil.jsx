@@ -5,6 +5,7 @@ import Logo from '@/components/Logo/Logo'
 import { useAuth } from '@/hooks/useAuth'
 import { PATHS } from '@/routes/paths'
 import { LINKS_ADMIN, LINKS_CUENTA } from '../links'
+import BotonTema from '../BotonTema/BotonTema'
 import styles from './MenuMovil.module.css'
 
 const LINK_INICIO = { to: PATHS.inicio, texto: 'Inicio', icono: House, end: true }
@@ -49,10 +50,14 @@ export default function MenuMovil({ categorias }) {
         <div className={styles.panel}>
           <div className={styles.encabezado}>
             <Logo />
-            <button type="button" className={styles.cerrar} onClick={cerrar}>
-              <X size={22} aria-hidden="true" />
-              <span className="solo-lectores">Cerrar menú</span>
-            </button>
+            <div className={styles.accionesEncabezado}>
+              {/* En celular el botón de tema vive acá: en el header no entra a 320 px */}
+              <BotonTema />
+              <button type="button" className={styles.cerrar} onClick={cerrar}>
+                <X size={22} aria-hidden="true" />
+                <span className="solo-lectores">Cerrar menú</span>
+              </button>
+            </div>
           </div>
 
           {estaLogueado ? (
