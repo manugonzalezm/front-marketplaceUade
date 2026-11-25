@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import { useSincronizarCarrito } from '@/hooks/useSincronizarCarrito'
 import { useSincronizarFavoritos } from '@/hooks/useSincronizarFavoritos'
 import MainLayout from '@/layouts/MainLayout'
 import AdminCategoriasPage from '@/pages/AdminCategorias/AdminCategoriasPage'
@@ -21,8 +22,9 @@ import RutaAdmin from './RutaAdmin'
 import RutaPrivada from './RutaPrivada'
 
 export default function AppRouter() {
-  // Carga los favoritos del usuario al iniciar sesión y los limpia al salir.
+  // Cargan los favoritos y el carrito del usuario al iniciar sesión y los limpian al salir.
   useSincronizarFavoritos()
+  useSincronizarCarrito()
 
   return (
     <Routes>
