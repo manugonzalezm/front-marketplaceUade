@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { EVENTO_CATEGORIAS_ACTUALIZADAS, getCategorias } from '@/api/categorias'
 import Logo from '@/components/Logo/Logo'
 import { PATHS } from '@/routes/paths'
+import BotonTema from './BotonTema/BotonTema'
 import Buscador from './Buscador/Buscador'
 import MenuCuenta from './MenuCuenta/MenuCuenta'
 import MenuMovil from './MenuMovil/MenuMovil'
@@ -75,6 +76,9 @@ export default function Navbar() {
               </span>
             )}
           </NavLink>
+          <div className={styles.tema}>
+            <BotonTema />
+          </div>
           <div className={styles.cuenta}>
             <MenuCuenta />
           </div>

@@ -84,6 +84,40 @@
   --transicion: 150ms ease;
 }
 
+/*
+ * Tema oscuro. Lo activa useAplicarTema poniendo data-tema="oscuro" en <html>
+ * (la preferencia se guarda en localStorage, ver src/store/persistencia.js).
+ * Solo se pisan colores y sombras: el resto de los tokens es igual.
+ */
+:root[data-tema='oscuro'] {
+  color-scheme: dark; /* scrollbars, inputs de fecha y autocompletado oscuros */
+
+  --color-primario: #8aa2ff;
+  --color-primario-hover: #a9bbff;
+  --color-primario-suave: #1e2850;
+
+  --color-fondo: #0f1218;
+  --color-superficie: #171b23;
+  --color-superficie-alt: #1f2430;
+  --color-borde: #2a303c;
+  --color-borde-fuerte: #3b4252;
+  --color-texto: #e8eaef;
+  --color-texto-suave: #a3aab8;
+  --color-texto-invertido: #0f1218; /* texto sobre --color-primario (claro en este tema) */
+
+  /* Estados (texto con contraste AA sobre --color-superficie) */
+  --color-exito: #4cc38a;
+  --color-exito-suave: #132d20;
+  --color-error: #ff7b7b;
+  --color-error-suave: #3a1a1a;
+  --color-aviso: #f0b44c;
+  --color-aviso-suave: #36280f;
+
+  --sombra-tarjeta: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
+  --sombra-tarjeta-hover: 0 4px 12px rgb(0 0 0 / 0.5);
+  --sombra-flotante: 0 12px 32px rgb(0 0 0 / 0.6), 0 2px 6px rgb(0 0 0 / 0.4);
+}
+
 @media (min-width: 768px) {
   :root {
     --margen-lateral: var(--espacio-5);
