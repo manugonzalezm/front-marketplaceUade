@@ -3,7 +3,8 @@ import { TEMAS } from './slices/preferenciasSlice'
 // Persistencia de datos NO sensibles del store en localStorage.
 //
 // Regla: acá solo va lo que no sirve para nada a un atacante (tema, idioma...).
-// Nunca el token de sesión ni datos del usuario.
+// El token de sesión no se guarda en el front (va en una cookie HttpOnly) y el
+// usuario se vuelve a pedir al back con GET /api/usuarios/me.
 //
 // localStorage y no sessionStorage: la preferencia tiene que sobrevivir a cerrar
 // el navegador, no solo al F5.

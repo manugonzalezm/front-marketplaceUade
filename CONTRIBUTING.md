@@ -305,7 +305,7 @@ prueba mientras tanto. Anoten acá quién se encarga:
 
 | Pieza                         | La usan                                                  | Responsable |
 | ----------------------------- | -------------------------------------------------------- | ----------- |
-| `AuthContext` + `useAuth`     | Login, rutas protegidas, navbar, todo lo que pide sesión | _a definir_ |
+| `authSlice` + `useAuth`       | Login, rutas protegidas, navbar, todo lo que pide sesión | _a definir_ |
 | `src/components/ProductoCard` | Inicio, Categoría, Mis productos                         | _a definir_ |
 | `src/api/productos.js`        | Inicio, Categoría, Detalle, Mis productos, Publicar      | _a definir_ |
 | `src/api/carrito.js`          | Detalle, Mi compra                                       | _a definir_ |
