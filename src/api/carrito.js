@@ -1,7 +1,7 @@
 import { apiFetch } from './client'
 
 // Módulo del recurso carrito ("Mi compra" en la UI). Todos los endpoints piden
-// sesión: el navegador manda solo la cookie de sesión (HttpOnly).
+// sesión: el navegador manda la cookie de sesión y apiFetch el header CSRF.
 
 /** Evento para refrescar el contador del header después de una compra exitosa. */
 export const EVENTO_CARRITO_ACTUALIZADO = 'marketplace:carrito-actualizado'

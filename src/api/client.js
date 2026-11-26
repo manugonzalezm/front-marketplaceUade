@@ -11,6 +11,11 @@
 
 import { respuestaMock } from './mock'
 
+// Cookie y header del token CSRF (los nombres por defecto de Spring Security).
+const COOKIE_CSRF = 'XSRF-TOKEN'
+const HEADER_CSRF = 'X-XSRF-TOKEN'
+const METODOS_SEGUROS = ['GET', 'HEAD', 'OPTIONS']
+
 // Rutas cuyo 401 no significa "se venció la sesión" (credenciales mal, o el
 // chequeo de sesión al abrir la app, que ya maneja authSlice).
 const RUTAS_SIN_AVISO_401 = ['/usuarios/login', '/usuarios/me']
@@ -25,6 +30,16 @@ let alExpirarSesion = () => {}
  */
 export function configurarSesionExpirada(callback) {
   alExpirarSesion = callback
+}
+
+/**
+ * Lee una cookie que NO es HttpOnly. La de sesión es HttpOnly, así que acá
+ * nunca aparece; la de CSRF sí, porque está hecha para que el front la lea.
+ * @param {string} nombre
+ */
+function leerCookie(nombre) {
+  const par = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${nombre}=`))
+  return par ? decodeURIComponent(par.slice(nombre.length + 1)) : null
 }
 
 // Por defecto responde con los datos de prueba de public/data/ (modo mock).
@@ -64,11 +79,17 @@ async function pedir(ruta, { method, body }) {
 
   if (body && !esFormData) headers['Content-Type'] = 'application/json'
 
+  // Double submit cookie: el back exige que el valor de la cookie XSRF-TOKEN vuelva
+  // en este header en todo POST/PUT/DELETE. Otro sitio no puede leer la cookie,
+  // así que no puede falsificar la request (CSRF).
+  const tokenCsrf = METODOS_SEGUROS.includes(method) ? null : leerCookie(COOKIE_CSRF)
+  if (tokenCsrf) headers[HEADER_CSRF] = tokenCsrf
+
   const respuesta = await fetch(`/api${ruta}`, {
     method,
     headers,
     body: body && !esFormData ? JSON.stringify(body) : body,
-    // Manda la cookie de sesión. Es el valor por defecto de
+    // Manda las cookies (la de sesión y la de CSRF). Es el valor por defecto de
     // fetch, pero lo dejamos explícito: sin esto no hay sesión.
     credentials: 'same-origin',
   })
