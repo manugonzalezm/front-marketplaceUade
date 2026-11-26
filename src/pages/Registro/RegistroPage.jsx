@@ -8,7 +8,7 @@ import FormularioRegistro from './components/FormularioRegistro/FormularioRegist
 import styles from './RegistroPage.module.css'
 
 /**
- * Registro de usuario. El back no devuelve token al registrarse: después del alta
+ * Registro de usuario. El back no inicia sesión al registrarse: después del alta
  * se hace login automático con el mismo mail y contraseña. Si ese login falla,
  * se manda al usuario a /login con el mail completo y un aviso de que la cuenta
  * ya se creó.
@@ -18,7 +18,7 @@ import styles from './RegistroPage.module.css'
  *     { nombreUsuario, mail, contrasena, nombre, apellido,
  *       fechaNacimiento: 'AAAA-MM-DD', sexo: 'MASCULINO' | 'FEMENINO' | 'OTRO' }
  *     -> UsuarioResponseDTO
- *   POST /api/usuarios/login (vía AuthContext)
+ *   POST /api/usuarios/login (vía useAuth / authSlice)
  */
 export default function RegistroPage() {
   const { estaLogueado, login } = useAuth()

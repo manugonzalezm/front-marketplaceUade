@@ -5,12 +5,22 @@ import { apiFetch } from './client'
 // getUsuario, getUsuarios, actualizarUsuario y eliminarUsuario.
 
 /**
- * POST /api/usuarios/login { mail, contrasena } -> { usuario, token }
+ * POST /api/usuarios/login { mail, contrasena } -> { usuario }
  * `usuario` es el UsuarioResponseDTO:
  *   { id, nombreUsuario, mail, nombre, apellido, fechaNacimiento, sexo, rol }
+ * El token NO viene en el body: el back lo pone en la cookie HttpOnly marketplace_token.
  */
 export const login = ({ mail, contrasena }) =>
   apiFetch('/usuarios/login', { method: 'POST', body: { mail, contrasena } })
+
+/**
+ * GET /api/usuarios/me -> UsuarioResponseDTO del dueño de la cookie de sesión.
+ * Se pide al abrir la app (o al apretar F5) para recuperar la sesión. 401 si no hay.
+ */
+export const getSesion = () => apiFetch('/usuarios/me')
+
+/** POST /api/usuarios/logout -> 204. El back borra la cookie de sesión. */
+export const logout = () => apiFetch('/usuarios/logout', { method: 'POST' })
 
 /**
  * POST /api/usuarios/registro

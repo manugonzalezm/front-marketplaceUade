@@ -8,12 +8,12 @@ import FormularioLogin from './components/FormularioLogin/FormularioLogin'
 import styles from './LoginPage.module.css'
 
 /**
- * Login con mail y contraseña. Guarda el token y el usuario que devuelve el back
- * (AuthContext) y redirige a la página desde la que vino (location.state?.desde,
- * lo pone RutaPrivada) o al inicio.
+ * Login con mail y contraseña. Guarda en authSlice el usuario que devuelve el back
+ * (el token queda en una cookie HttpOnly que pone el back) y redirige a la página
+ * desde la que vino (location.state?.desde, lo pone RutaPrivada) o al inicio.
  *
  * Endpoints:
- *   POST /api/usuarios/login   { mail, contrasena } -> { usuario, token }
+ *   POST /api/usuarios/login   { mail, contrasena } -> { usuario } + Set-Cookie con el token
  *
  * location.state opcional:
  *   desde    location a la que quería ir el usuario antes de que le pidieran ingresar

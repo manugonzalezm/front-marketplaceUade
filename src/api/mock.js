@@ -78,27 +78,43 @@ function buscar(lista, id, error) {
   return item
 }
 
-/** Token con forma de JWT (JSON Web Token): AuthContext lee `exp` del payload. Sin firma real. */
-function crearToken(usuario) {
-  const base64url = (objeto) =>
-    btoa(JSON.stringify(objeto)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_')
-  const payload = {
-    sub: usuario.mail,
-    id: usuario.id,
-    rol: usuario.rol,
-    exp: Math.floor(Date.now() / 1000) + 86400,
+// ─── Sesión simulada ────────────────────────────────────────────────────────
+// En modo real la sesión es la cookie HttpOnly marketplace_token que pone el back:
+// el navegador la guarda y la manda sola, y el código de la app no la ve. Acá
+// mock.js hace de back y de navegador a la vez, así que guarda esa "cookie" por
+// su cuenta (solo el id del usuario y el vencimiento, nunca un token real) con la
+// misma duración que el JWT: 24 h. Nada fuera de este archivo la lee.
+
+const CLAVE_COOKIE_SIMULADA = 'marketplace.mock.cookieSesion'
+const DURACION_SESION_MS = 24 * 60 * 60 * 1000
+
+function guardarCookieSimulada(usuario) {
+  try {
+    localStorage.setItem(
+      CLAVE_COOKIE_SIMULADA,
+      JSON.stringify({ usuarioId: usuario.id, vence: Date.now() + DURACION_SESION_MS }),
+    )
+  } catch {
+    // navegador sin almacenamiento: la sesión simulada no sobrevive al F5
   }
-  return `${base64url({ alg: 'none', typ: 'JWT' })}.${base64url(payload)}.mock`
 }
 
-/** Devuelve el usuario dueño del token, o lanza 401 como el back si no hay sesión. */
-function usuarioDeSesion(datos, token) {
+function borrarCookieSimulada() {
   try {
-    const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
-    const usuario = datos.usuarios.find((item) => item.id === payload.id)
-    if (usuario) return usuario
+    localStorage.removeItem(CLAVE_COOKIE_SIMULADA)
   } catch {
-    // token ausente o con otro formato: cae en el 401 de abajo
+    // nada que borrar
+  }
+}
+
+/** Devuelve el usuario de la sesión simulada, o lanza 401 como el back si no hay sesión. */
+function usuarioDeSesion(datos) {
+  try {
+    const { usuarioId, vence } = JSON.parse(localStorage.getItem(CLAVE_COOKIE_SIMULADA))
+    const usuario = datos.usuarios.find((item) => item.id === usuarioId)
+    if (usuario && vence > Date.now()) return usuario
+  } catch {
+    // sin sesión o con otro formato: cae en el 401 de abajo
   }
   throw new ApiError(401, 'Usuario no autenticado')
 }
@@ -123,7 +139,7 @@ function validarProducto(datos, body) {
 
 // ─── Recursos ───────────────────────────────────────────────────────────────
 
-async function usuarios(datos, { metodo, partes, body, token }) {
+async function usuarios(datos, { metodo, partes, body }) {
   const [, segundo] = partes
 
   if (metodo === 'POST' && segundo === 'login') {
@@ -133,7 +149,13 @@ async function usuarios(datos, { metodo, partes, body, token }) {
     if (!usuario || body?.contrasena !== contrasena) {
       throw new ApiError(401, 'Mail o contraseña incorrectos')
     }
-    return { usuario: copia(usuario), token: crearToken(usuario) } // LoginResponseDTO
+    guardarCookieSimulada(usuario) // el back real responde con Set-Cookie
+    return { usuario: copia(usuario) } // LoginResponseDTO: el token no viaja en el body
+  }
+
+  if (metodo === 'POST' && segundo === 'logout') {
+    borrarCookieSimulada()
+    return null
   }
 
   if (metodo === 'POST' && segundo === 'registro') {
@@ -150,7 +172,9 @@ async function usuarios(datos, { metodo, partes, body, token }) {
     return copia(nuevo) // UsuarioResponseDTO: nunca incluye la contraseña
   }
 
-  const sesion = usuarioDeSesion(datos, token)
+  const sesion = usuarioDeSesion(datos)
+
+  if (metodo === 'GET' && segundo === 'me') return copia(sesion)
 
   if (metodo === 'GET' && !segundo) {
     exigirAdmin(sesion)
@@ -176,13 +200,13 @@ async function usuarios(datos, { metodo, partes, body, token }) {
   }
 }
 
-async function categorias(datos, { metodo, partes, body, token }) {
+async function categorias(datos, { metodo, partes, body }) {
   const id = partes[1] ? Number(partes[1]) : null
   const noEncontrada = new ApiError(404, `Categoría con ID ${id} no encontrada`)
 
   if (metodo === 'GET') return copia(id ? buscar(datos.categorias, id, noEncontrada) : datos.categorias)
 
-  exigirAdmin(usuarioDeSesion(datos, token))
+  exigirAdmin(usuarioDeSesion(datos))
   const nombre = body?.nombre?.trim()
   if (metodo !== 'DELETE' && !nombre) throw new ApiError(400, 'El nombre es obligatorio')
   const repetida = datos.categorias.find((item) => item.nombre.toLowerCase() === nombre?.toLowerCase())
@@ -208,7 +232,7 @@ async function categorias(datos, { metodo, partes, body, token }) {
   }
 }
 
-async function imagenes(datos, { metodo, partes, body, token }, producto) {
+async function imagenes(datos, { metodo, partes, body }, producto) {
   const lista = await imagenesDe(datos, producto.id)
   if (metodo === 'GET' && !partes[3]) return copia(lista)
 
@@ -216,7 +240,7 @@ async function imagenes(datos, { metodo, partes, body, token }, producto) {
   const noEncontrada = new ApiError(404, `Imagen con ID ${imagenId} no encontrada para el producto`)
   if (metodo === 'GET') return copia(buscar(lista, imagenId, noEncontrada))
 
-  const sesion = usuarioDeSesion(datos, token)
+  const sesion = usuarioDeSesion(datos)
   if (producto.usuarioId !== sesion.id) {
     throw new ApiError(403, `El producto con ID ${producto.id} no pertenece al usuario`)
   }
@@ -249,7 +273,7 @@ async function imagenes(datos, { metodo, partes, body, token }, producto) {
 }
 
 async function productos(datos, peticion) {
-  const { metodo, partes, query, body, token } = peticion
+  const { metodo, partes, query, body } = peticion
   const id = partes[1] ? Number(partes[1]) : null
 
   if (metodo === 'GET' && !id) {
@@ -265,7 +289,7 @@ async function productos(datos, peticion) {
   }
 
   if (metodo === 'POST' && !id) {
-    const sesion = usuarioDeSesion(datos, token)
+    const sesion = usuarioDeSesion(datos)
     validarProducto(datos, body)
     const { nombre, descripcion, precio, stock, categoriaId } = body
     const nuevo = { id: siguienteId(datos.productos), nombre, descripcion, precio, stock, categoriaId }
@@ -279,7 +303,7 @@ async function productos(datos, peticion) {
   if (partes[2] === 'imagenes') return imagenes(datos, peticion, producto)
   if (metodo === 'GET') return copia(producto)
 
-  const sesion = usuarioDeSesion(datos, token)
+  const sesion = usuarioDeSesion(datos)
   if (producto.usuarioId !== sesion.id) {
     throw new ApiError(403, `El producto con ID ${id} no pertenece al usuario`)
   }
@@ -296,8 +320,8 @@ async function productos(datos, peticion) {
   }
 }
 
-async function carrito(datos, { metodo, partes, body, token }) {
-  const sesion = usuarioDeSesion(datos, token)
+async function carrito(datos, { metodo, partes, body }) {
+  const sesion = usuarioDeSesion(datos)
   const propios = () => datos.carrito.filter((item) => item.usuarioId === sesion.id)
 
   if (metodo === 'GET') return copia(propios())
@@ -389,11 +413,11 @@ const RECURSOS = { usuarios, categorias, productos, carrito }
 /**
  * Responde una petición como lo haría el back.
  * @param {string} ruta  La misma que recibe apiFetch, por ejemplo '/productos?categoriaId=2'
- * @param {{ method: string, body?: object | FormData, token?: string | null }} opciones
+ * @param {{ method: string, body?: object | FormData }} opciones
  * @returns {Promise<any>} El DTO de la respuesta, o null en los 204.
  * @throws {ApiError} Con el mismo status y mensaje que mandaría el back.
  */
-export async function respuestaMock(ruta, { method, body, token }) {
+export async function respuestaMock(ruta, { method, body }) {
   await esperar(DEMORA_MS)
   const [camino, textoQuery = ''] = ruta.split('?')
   const partes = camino.split('/').filter(Boolean) // '/productos/3/imagenes' -> ['productos', '3', 'imagenes']
@@ -401,7 +425,7 @@ export async function respuestaMock(ruta, { method, body, token }) {
   const datos = await obtenerDatos()
 
   const respuesta = recurso
-    ? await recurso(datos, { metodo: method, partes, query: new URLSearchParams(textoQuery), body, token })
+    ? await recurso(datos, { metodo: method, partes, query: new URLSearchParams(textoQuery), body })
     : undefined
 
   if (respuesta === undefined) {
