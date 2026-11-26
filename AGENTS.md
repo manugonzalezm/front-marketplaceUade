@@ -45,7 +45,7 @@ npm run format:check # lo que corre la revisión
 ```
 src/
 ├── api/                        Acceso al back: client.js + un módulo por recurso
-│   ├── client.js               apiFetch(): base /api, token, JSON, errores
+│   ├── client.js               apiFetch(): base /api, cookies + CSRF, JSON, errores
 │   └── categorias.js           ejemplo de módulo (productos.js, carrito.js, usuarios.js... a crear)
 ├── components/                 Componentes compartidos por dos o más pantallas
 │   ├── EncabezadoPagina/       título + descripción + migas + acciones de cada pantalla
@@ -54,7 +54,7 @@ src/
 │   ├── Logo/
 │   ├── MapaPantallas/          atajos a todas las pantallas (solo en `npm run dev`)
 │   └── Navbar/                 Navbar.jsx + sus partes: Buscador/, MenuCuenta/, MenuMovil/
-├── context/                    (a crear) AuthContext, CompraContext
+├── store/                      Redux: store.js, persistencia.js y slices/ (auth, preferencias, cart, favorite)
 ├── hooks/                      (a crear) useAuth, useCompra, ...
 ├── layouts/MainLayout.jsx      Navbar + <Outlet /> + Footer
 ├── pages/                      Una carpeta por vista (ver abajo)
@@ -142,9 +142,10 @@ export const crearProducto = (producto) => apiFetch('/productos', { method: 'POS
 - Las rutas van sin host (`'/productos'`, no `http://localhost:8080/api/productos`). En desarrollo el proxy de
   Vite manda `/api` al 8080; en Vercel lo hace un rewrite de `vercel.json`. El back no tiene CORS configurado: no
   cambies esto por una URL absoluta ni por una variable `VITE_API_URL`.
-- Autenticación: JWT en el header `Authorization: Bearer <token>`. `apiFetch` lo agrega solo si hay token en
-  `localStorage` bajo la clave `TOKEN_STORAGE_KEY`. El token dura 24 h; ante un 401 hay que cerrar la sesión y
-  mandar al login.
+- Autenticación: el JWT viaja en una cookie `HttpOnly` (`marketplace_token`) que pone el back en el login y que
+  el navegador manda sola. El front **nunca** ve ni guarda el token. En `POST`/`PUT`/`DELETE`, `apiFetch` copia la
+  cookie `XSRF-TOKEN` en el header `X-XSRF-TOKEN` (protección CSRF). Ante un 401, `apiFetch` avisa y `authSlice`
+  cierra la sesión. Detalle y fundamentos en [docs/persistencia-sesion.md](docs/persistencia-sesion.md).
 - Errores: `apiFetch` tira `ApiError` con `status` y `message`. El back siempre responde
   `{ status, mensaje, timestamp }` y `mensaje` ya está pensado para mostrarse: mostralo tal cual.
 - Imágenes: `POST /api/productos/{id}/imagenes` es `multipart/form-data` con el campo `archivo`. Pasale un
@@ -157,24 +158,27 @@ Particularidades del back que hay que resolver en el front:
   filtrar `stock > 0`; en "Mis productos" mostrarlos como pausados.
 - `ProductoResponseDTO` trae `categoriaId` y `usuarioId`, no los nombres ni las imágenes. El nombre de la
   categoría sale de `GET /api/categorias` y las imágenes de `GET /api/productos/{id}/imagenes`.
-- El registro no devuelve token: después de registrarse hay que loguearse.
+- El registro no inicia sesión: después de registrarse hay que loguearse.
 - El checkout (`POST /api/carrito/checkout`) devuelve el pedido, pero no existe un GET de pedidos: la pantalla de
   confirmación recibe el pedido por `navigate(PATHS.compraConfirmada, { state: { pedido } })`.
 - En la UI esto se llama "compra en curso" o "Mi compra", aunque el endpoint sea `/api/carrito`.
 
 ## Sesión y estado global
 
-Estado local (`useState`) por defecto. Context solo para lo que necesitan muchas pantallas a la vez:
+Estado local (`useState`) por defecto. Redux Toolkit (`src/store/`) solo para lo que necesitan muchas pantallas
+a la vez:
 
-- `AuthContext` (`src/context/AuthContext.jsx` + hook `src/hooks/useAuth.js`). Expone
-  `{ usuario, token, estaLogueado, esAdmin, login(mail, contrasena), logout() }`. Guarda el token en
-  `localStorage[TOKEN_STORAGE_KEY]` y el usuario (el `UsuarioResponseDTO` del login) en
-  `localStorage['marketplace.usuario']`. `RutaPrivada`, `RutaAdmin`, `MenuCuenta` y `MenuMovil` leen de acá (ya
-  tienen comentarios `TODO (auth)` donde va cada cosa).
-- `CompraContext` (opcional, si hace falta mostrar la cantidad de productos en el header). El back es la fuente
-  de verdad: el context solo cachea `GET /api/carrito` y se refresca después de agregar, quitar o confirmar.
+- `authSlice` + hook `useAuth` (`src/hooks/useAuth.js`). Expone
+  `{ usuario, estaLogueado, esAdmin, verificandoSesion, login(mail, contrasena), logout(), actualizarSesion(usuario) }`.
+  Guarda solo el usuario, en memoria. Al abrir la app (o con F5) `main.jsx` despacha `verificarSesion()`, que pide
+  `GET /api/usuarios/me` con la cookie: así se recupera la sesión. Mientras tanto `verificandoSesion` es `true` y
+  `RutaPrivada` muestra un spinner.
+- `preferenciasSlice`: datos **no sensibles** de la interfaz (hoy, el tema claro/oscuro). Es lo único que se
+  persiste en `localStorage` (`src/store/persistencia.js`, clave `marketplace.preferencias`), validando lo que se lee.
+- `cartSlice` y `favoriteSlice`: el back es la fuente de verdad; se cargan al iniciar sesión y se limpian al salir.
 
-Sin Redux, Zustand ni librerías de estado.
+Nunca guardes en `localStorage`/`sessionStorage` el token, el usuario ni nada que sirva para suplantar a alguien.
+No sumes otras librerías de estado (Zustand, redux-persist...) sin acordarlo.
 
 ## Estilos
 
@@ -274,4 +278,4 @@ este archivo y `CONTRIBUTING.md`.
 - Crear archivos `.css` globales nuevos.
 - Pasar a TypeScript, cambiar la estructura de carpetas o reformatear archivos ajenos dentro de un PR de otra
   cosa.
-- Guardar la contraseña del usuario en ningún lado.
+- Guardar la contraseña del usuario en ningún lado, o el token de sesión en `localStorage`/`sessionStorage`.
